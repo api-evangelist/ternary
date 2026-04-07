@@ -7,9 +7,9 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
+  - Cost Optimization
   - FinOps
   - Google Cloud
-  - Cost Optimization
 url: >-
   https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml
 created: '2026-03-16'
