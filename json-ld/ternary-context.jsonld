@@ -1,0 +1,134 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "finops": "https://www.finops.org/framework/",
+    "ternary": "https://ternary.app/api/v1#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+
+    "CloudCostAnomaly": {
+      "@id": "ternary:Anomaly",
+      "@type": "@id",
+      "rdfs:comment": "A detected cloud cost anomaly"
+    },
+    "CostAllocation": {
+      "@id": "ternary:CostAllocation",
+      "@type": "@id",
+      "rdfs:comment": "A rule for allocating shared cloud costs"
+    },
+    "CloudBudget": {
+      "@id": "ternary:Budget",
+      "@type": "@id",
+      "rdfs:comment": "A cloud cost budget with thresholds"
+    },
+    "CloudCommitment": {
+      "@id": "ternary:Commitment",
+      "@type": "@id",
+      "rdfs:comment": "A cloud commitment purchase (RI, Savings Plan, CUD)"
+    },
+    "CostReport": {
+      "@id": "ternary:Report",
+      "@type": "@id",
+      "rdfs:comment": "A cloud cost analytics report"
+    },
+
+    "id": "@id",
+    "name": "schema:name",
+    "description": "schema:description",
+    "cloud_provider": {
+      "@id": "ternary:cloudProvider",
+      "@type": "xsd:string"
+    },
+    "service": {
+      "@id": "ternary:cloudService",
+      "@type": "xsd:string"
+    },
+    "severity": {
+      "@id": "ternary:severity",
+      "@type": "@vocab",
+      "@context": {
+        "low": "ternary:LowSeverity",
+        "medium": "ternary:MediumSeverity",
+        "high": "ternary:HighSeverity",
+        "critical": "ternary:CriticalSeverity"
+      }
+    },
+    "status": {
+      "@id": "schema:status",
+      "@type": "xsd:string"
+    },
+    "expected_cost": {
+      "@id": "ternary:expectedCost",
+      "@type": "xsd:decimal"
+    },
+    "actual_cost": {
+      "@id": "ternary:actualCost",
+      "@type": "xsd:decimal"
+    },
+    "cost_delta": {
+      "@id": "ternary:costDelta",
+      "@type": "xsd:decimal"
+    },
+    "amount": {
+      "@id": "schema:price",
+      "@type": "xsd:decimal"
+    },
+    "period": {
+      "@id": "ternary:budgetPeriod",
+      "@type": "xsd:string"
+    },
+    "current_spend": {
+      "@id": "ternary:currentSpend",
+      "@type": "xsd:decimal"
+    },
+    "forecasted_spend": {
+      "@id": "ternary:forecastedSpend",
+      "@type": "xsd:decimal"
+    },
+    "alert_thresholds": {
+      "@id": "ternary:alertThresholds",
+      "@container": "@list"
+    },
+    "detected_at": {
+      "@id": "schema:startDate",
+      "@type": "xsd:dateTime"
+    },
+    "acknowledged_at": {
+      "@id": "ternary:acknowledgedAt",
+      "@type": "xsd:dateTime"
+    },
+    "created_at": {
+      "@id": "schema:dateCreated",
+      "@type": "xsd:dateTime"
+    },
+    "updated_at": {
+      "@id": "schema:dateModified",
+      "@type": "xsd:dateTime"
+    },
+    "commitment_type": {
+      "@id": "ternary:commitmentType",
+      "@type": "@vocab",
+      "@context": {
+        "reserved_instance": "ternary:ReservedInstance",
+        "savings_plan": "ternary:SavingsPlan",
+        "committed_use_discount": "ternary:CommittedUseDiscount"
+      }
+    },
+    "utilization": {
+      "@id": "ternary:commitmentUtilization",
+      "@type": "xsd:decimal"
+    },
+    "savings_vs_on_demand": {
+      "@id": "ternary:savingsVsOnDemand",
+      "@type": "xsd:decimal"
+    },
+    "affected_resources": {
+      "@id": "ternary:affectedResources",
+      "@container": "@list"
+    },
+    "Organization": "schema:Organization",
+    "url": "schema:url"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/api-evangelist/ternary/blob/main/json-schema/ternary-budget-schema.json",
+  "title": "Ternary Cloud Cost Budget",
+  "description": "Schema for a cloud cost budget in the Ternary FinOps platform, including spend targets, current spend, and alert thresholds.",
+  "type": "object",
+  "required": ["id", "name", "amount", "period"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the budget"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name for the budget"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description of what this budget covers"
+    },
+    "amount": {
+      "type": "number",
+      "description": "Budget amount in USD",
+      "minimum": 0
+    },
+    "period": {
+      "type": "string",
+      "description": "Budget period - how often the budget resets",
+      "enum": ["monthly", "quarterly", "annual"]
+    },
+    "cloud_provider": {
+      "type": "string",
+      "description": "Cloud provider scope for this budget",
+      "enum": ["gcp", "aws", "azure", "oci", "all"]
+    },
+    "current_spend": {
+      "type": "number",
+      "description": "Current period spend against this budget in USD",
+      "minimum": 0
+    },
+    "forecasted_spend": {
+      "type": "number",
+      "description": "ML-forecasted spend for the current period in USD",
+      "minimum": 0
+    },
+    "alert_thresholds": {
+      "type": "array",
+      "description": "List of budget threshold percentages that trigger alerts (e.g., [50, 80, 100])",
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 200
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the budget was created"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the budget was last updated"
+    }
+  },
+  "examples": [
+    {
+      "id": "bud_xyz789",
+      "name": "Production GCP Budget",
+      "description": "Monthly budget for production GCP environment",
+      "amount": 50000.00,
+      "period": "monthly",
+      "cloud_provider": "gcp",
+      "current_spend": 32500.00,
+      "forecasted_spend": 48200.00,
+      "alert_thresholds": [50, 80, 100],
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-05-01T00:00:00Z"
+    }
+  ]
+}

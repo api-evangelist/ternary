@@ -1,0 +1,36 @@
+{
+  "title": "Ternary Create Budget",
+  "description": "Example request to create a monthly cloud cost budget for production GCP environment",
+  "request": {
+    "method": "POST",
+    "url": "https://api.ternary.app/v1/budgets",
+    "headers": {
+      "Content-Type": "application/json",
+      "X-API-Key": "your-api-key-here"
+    },
+    "body": {
+      "name": "Production GCP Budget",
+      "description": "Monthly budget for production GCP environment",
+      "amount": 50000.00,
+      "period": "monthly",
+      "cloud_provider": "gcp",
+      "alert_thresholds": [50, 80, 100]
+    }
+  },
+  "response": {
+    "status": 201,
+    "body": {
+      "id": "bud_xyz789",
+      "name": "Production GCP Budget",
+      "description": "Monthly budget for production GCP environment",
+      "amount": 50000.00,
+      "period": "monthly",
+      "cloud_provider": "gcp",
+      "current_spend": 0.00,
+      "forecasted_spend": 0.00,
+      "alert_thresholds": [50, 80, 100],
+      "created_at": "2026-05-03T12:00:00Z",
+      "updated_at": "2026-05-03T12:00:00Z"
+    }
+  }
+}

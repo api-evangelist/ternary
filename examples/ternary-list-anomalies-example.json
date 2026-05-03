@@ -1,0 +1,34 @@
+{
+  "title": "Ternary List Cost Anomalies",
+  "description": "Example request to list open cloud cost anomalies for GCP",
+  "request": {
+    "method": "GET",
+    "url": "https://api.ternary.app/v1/anomalies?status=open&cloud_provider=gcp",
+    "headers": {
+      "X-API-Key": "your-api-key-here"
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "anomalies": [
+        {
+          "id": "anom_abc123",
+          "cloud_provider": "gcp",
+          "service": "BigQuery",
+          "severity": "high",
+          "status": "open",
+          "expected_cost": 150.00,
+          "actual_cost": 2340.50,
+          "cost_delta": 2190.50,
+          "detected_at": "2026-05-03T08:30:00Z",
+          "affected_resources": [
+            "projects/my-project/datasets/analytics"
+          ]
+        }
+      ],
+      "next_page_token": null,
+      "total_count": 1
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "Ternary Cloud Cost Anomaly",
+  "description": "Structure documentation for a cloud cost anomaly detected by Ternary's ML-powered algorithms.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Unique system-generated identifier for the anomaly"
+    },
+    {
+      "name": "cloud_provider",
+      "type": "string",
+      "required": true,
+      "description": "Cloud provider where anomaly was detected",
+      "enum": ["gcp", "aws", "azure", "oci", "alibaba"]
+    },
+    {
+      "name": "service",
+      "type": "string",
+      "required": false,
+      "description": "Cloud service that generated the anomalous costs (e.g., BigQuery, EC2, Azure Functions)"
+    },
+    {
+      "name": "severity",
+      "type": "string",
+      "required": false,
+      "description": "Severity level based on cost delta magnitude",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "required": true,
+      "description": "Current resolution workflow status",
+      "enum": ["open", "acknowledged", "resolved"]
+    },
+    {
+      "name": "expected_cost",
+      "type": "number",
+      "required": false,
+      "description": "Baseline cost expected based on ML historical analysis (USD)"
+    },
+    {
+      "name": "actual_cost",
+      "type": "number",
+      "required": false,
+      "description": "Actual observed cost that triggered anomaly detection (USD)"
+    },
+    {
+      "name": "cost_delta",
+      "type": "number",
+      "required": false,
+      "description": "Difference: actual_cost minus expected_cost (USD)"
+    },
+    {
+      "name": "detected_at",
+      "type": "string (date-time)",
+      "required": true,
+      "description": "ISO 8601 timestamp of when anomaly was first detected"
+    },
+    {
+      "name": "acknowledged_at",
+      "type": "string (date-time)",
+      "required": false,
+      "description": "ISO 8601 timestamp of when anomaly was acknowledged by a team member"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Optional comment added when acknowledging"
+    },
+    {
+      "name": "affected_resources",
+      "type": "array[string]",
+      "required": false,
+      "description": "List of cloud resource IDs contributing to the anomaly"
+    }
+  ]
+}

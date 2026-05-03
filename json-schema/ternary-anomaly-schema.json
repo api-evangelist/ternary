@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/api-evangelist/ternary/blob/main/json-schema/ternary-anomaly-schema.json",
+  "title": "Ternary Cloud Cost Anomaly",
+  "description": "Schema for a detected cloud cost anomaly in the Ternary FinOps platform.",
+  "type": "object",
+  "required": ["id", "cloud_provider", "status", "detected_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the anomaly"
+    },
+    "cloud_provider": {
+      "type": "string",
+      "description": "Cloud provider where the anomaly was detected",
+      "enum": ["gcp", "aws", "azure", "oci", "alibaba"]
+    },
+    "service": {
+      "type": "string",
+      "description": "Cloud service that generated the anomaly (e.g., BigQuery, EC2)"
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity level of the cost anomaly",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current resolution status of the anomaly",
+      "enum": ["open", "acknowledged", "resolved"]
+    },
+    "expected_cost": {
+      "type": "number",
+      "description": "Expected cost amount based on ML-powered historical baseline (USD)"
+    },
+    "actual_cost": {
+      "type": "number",
+      "description": "Actual observed cost amount that triggered the anomaly (USD)"
+    },
+    "cost_delta": {
+      "type": "number",
+      "description": "Difference between actual and expected cost (USD)"
+    },
+    "detected_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the anomaly was first detected"
+    },
+    "acknowledged_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the anomaly was acknowledged"
+    },
+    "comment": {
+      "type": "string",
+      "description": "Optional comment added when acknowledging the anomaly"
+    },
+    "affected_resources": {
+      "type": "array",
+      "description": "List of cloud resource identifiers contributing to the anomaly",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "examples": [
+    {
+      "id": "anom_abc123",
+      "cloud_provider": "gcp",
+      "service": "BigQuery",
+      "severity": "high",
+      "status": "open",
+      "expected_cost": 150.00,
+      "actual_cost": 2340.50,
+      "cost_delta": 2190.50,
+      "detected_at": "2026-05-03T08:30:00Z",
+      "affected_resources": ["projects/my-project/datasets/analytics"]
+    }
+  ]
+}

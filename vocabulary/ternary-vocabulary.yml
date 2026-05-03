@@ -1,0 +1,172 @@
+name: Ternary Vocabulary
+description: >-
+  Core vocabulary and taxonomy for Ternary, the multi-cloud FinOps platform.
+  Covers cloud cost management concepts, FinOps practices, commitment types,
+  and platform-specific terminology.
+created: '2026-05-03'
+modified: '2026-05-03'
+terms:
+  - term: FinOps
+    definition: >-
+      A financial management discipline and cultural practice for cloud cost
+      optimization. Brings together finance, engineering, and business teams to
+      make data-driven spending decisions. Ternary is a FinOps Certified Platform.
+    tags:
+      - Core Concepts
+      - Cloud Finance
+
+  - term: Universal Spend Ledger
+    definition: >-
+      Ternary's proprietary data layer that normalizes cloud billing data from
+      multiple providers (AWS, Azure, GCP, OCI) into a consistent, queryable
+      format aligned with the FOCUS standard.
+    tags:
+      - Core Concepts
+      - Data Platform
+
+  - term: Anomaly Detection
+    definition: >-
+      ML-powered identification of unexpected cloud cost spikes or drops.
+      Ternary's algorithms establish a baseline from historical spend patterns
+      and alert when actual spend deviates significantly.
+    tags:
+      - Cost Monitoring
+      - Machine Learning
+
+  - term: Cost Allocation
+    definition: >-
+      The process of distributing shared cloud costs across teams, projects, or
+      cost centers. Ternary supports proportional, fixed, and even allocation
+      methods based on cloud resource labels.
+    tags:
+      - Cost Management
+      - Chargeback
+
+  - term: Cost Center
+    definition: >-
+      An organizational unit (team, product, department) that is responsible for
+      a portion of cloud costs. Ternary maps cloud spend to cost centers using
+      labels and allocation rules.
+    tags:
+      - Cost Management
+      - Organization
+
+  - term: Commitment
+    definition: >-
+      A cloud purchase contract that provides discounted pricing in exchange for
+      a usage commitment. Includes Reserved Instances (AWS), Savings Plans (AWS),
+      and Committed Use Discounts (GCP).
+    tags:
+      - Cost Optimization
+      - Commitments
+
+  - term: Reserved Instance
+    definition: >-
+      An AWS commitment type that provides up to 75% discount on EC2, RDS, and
+      other services in exchange for a 1-year or 3-year commitment.
+    tags:
+      - Commitments
+      - AWS
+
+  - term: Savings Plan
+    definition: >-
+      An AWS flexible commitment model that provides discounts on compute usage
+      (EC2, Fargate, Lambda) in exchange for a consistent spend commitment.
+    tags:
+      - Commitments
+      - AWS
+
+  - term: Committed Use Discount
+    definition: >-
+      A GCP commitment type that provides discounts of up to 57% on VM resources
+      in exchange for a 1-year or 3-year commitment.
+    tags:
+      - Commitments
+      - Google Cloud
+
+  - term: Commitment Utilization
+    definition: >-
+      The percentage of a commitment's capacity that is being actively consumed.
+      Low utilization indicates over-commitment and wasted spend.
+    tags:
+      - Commitments
+      - Optimization
+
+  - term: Budget
+    definition: >-
+      A defined cloud spending target for a period (monthly, quarterly, annual).
+      Ternary tracks current spend vs budget and sends alerts at configurable
+      threshold percentages.
+    tags:
+      - Budgeting
+      - Forecasting
+
+  - term: Forecasting
+    definition: >-
+      ML-based projection of future cloud spend based on historical usage patterns
+      and trends. Ternary forecasts help identify budget overruns before they occur.
+    tags:
+      - Forecasting
+      - Machine Learning
+
+  - term: Cost Anomaly
+    definition: >-
+      A detected deviation from expected cloud spend. Ternary classifies anomalies
+      by severity (low, medium, high, critical) and tracks acknowledgement and
+      resolution workflow.
+    tags:
+      - Cost Monitoring
+      - Anomaly Detection
+
+  - term: FOCUS
+    definition: >-
+      FinOps Open Cost and Usage Specification. An open standard for normalizing
+      cloud billing data across providers. Ternary aligns its Universal Spend
+      Ledger with FOCUS for cross-provider consistency.
+    tags:
+      - Standards
+      - Data Platform
+
+  - term: Kubernetes Cost Allocation
+    definition: >-
+      Attribution of Kubernetes workload costs (pods, namespaces, deployments)
+      to cost centers using pod labels. Ternary uses an agentless monitoring
+      approach via GKE, EKS, and AKS native APIs.
+    tags:
+      - Kubernetes
+      - Cost Allocation
+
+  - term: Pod Label
+    definition: >-
+      A Kubernetes metadata key-value pair attached to pods. Ternary uses pod
+      labels to map Kubernetes workload costs to teams and cost centers for
+      chargeback and showback.
+    tags:
+      - Kubernetes
+      - Cost Allocation
+
+  - term: Showback
+    definition: >-
+      The practice of making teams aware of their cloud costs without charging
+      them back. The first step in FinOps maturity, increasing cost awareness.
+    tags:
+      - FinOps
+      - Cost Management
+
+  - term: Chargeback
+    definition: >-
+      The practice of billing teams for their actual cloud consumption. Requires
+      accurate cost allocation rules and is a more advanced FinOps practice than
+      showback.
+    tags:
+      - FinOps
+      - Cost Management
+
+  - term: Unit Economics
+    definition: >-
+      Cost metrics normalized by business drivers (e.g., cost per user, cost per
+      transaction). Ternary's reporting supports custom unit metrics to connect
+      cloud spend to business outcomes.
+    tags:
+      - Metrics
+      - Business Value
