@@ -1,466 +1,816 @@
-naftiko: "1.0.0-alpha1"
-
+naftiko: 1.0.0-alpha2
 info:
-  label: "Ternary Cloud Cost Management"
-  description: >-
-    Workflow capability for FinOps teams managing multi-cloud costs using
-    Ternary. Combines cost allocation, anomaly detection, commitment tracking,
-    budgeting, forecasting, and reporting into a unified workflow for cloud
-    financial operations teams, engineers, and finance stakeholders.
+  label: Ternary Cloud Cost Management
+  description: Workflow capability for FinOps teams managing multi-cloud costs using Ternary. Combines cost allocation, anomaly
+    detection, commitment tracking, budgeting, forecasting, and reporting into a unified workflow for cloud financial operations
+    teams, engineers, and finance stakeholders.
   tags:
-    - Ternary
-    - FinOps
-    - Cloud Cost Management
-    - Anomaly Detection
-    - Cost Optimization
-    - Budgeting
-    - Google Cloud
-    - Multi-Cloud
-  created: "2026-05-03"
-  modified: "2026-05-03"
-
+  - Ternary
+  - FinOps
+  - Cloud Cost Management
+  - Anomaly Detection
+  - Cost Optimization
+  - Budgeting
+  - Google Cloud
+  - Multi-Cloud
+  created: '2026-05-03'
+  modified: '2026-05-06'
 binds:
-  - namespace: env
-    keys:
-      TERNARY_API_KEY: TERNARY_API_KEY
-
+- namespace: env
+  keys:
+    TERNARY_API_KEY: TERNARY_API_KEY
 capability:
   consumes:
-    - import: ternary
-      location: ./shared/ternary.yaml
-
+  - type: http
+    namespace: ternary
+    baseUri: https://api.ternary.app
+    description: Ternary FinOps platform REST API
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.TERNARY_API_KEY}}'
+      placement: header
+    resources:
+    - name: cost-allocations
+      path: /v1/cost-allocations
+      description: Cost allocation rules management
+      operations:
+      - name: list-cost-allocations
+        method: GET
+        description: Returns a list of cost allocation rules
+        inputParameters:
+        - name: page_token
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        - name: page_size
+          in: query
+          type: integer
+          required: false
+          description: Number of results per page
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-cost-allocation
+        method: POST
+        description: Creates a new cost allocation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            description: '{{tools.description}}'
+            allocation_type: '{{tools.allocation_type}}'
+            source_labels: '{{tools.source_labels}}'
+            target_cost_centers: '{{tools.target_cost_centers}}'
+      - name: get-cost-allocation
+        method: GET
+        description: Returns details of a specific cost allocation rule
+        inputParameters:
+        - name: allocation_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the cost allocation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-cost-allocation
+        method: PUT
+        description: Updates an existing cost allocation rule
+        inputParameters:
+        - name: allocation_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the cost allocation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            allocation_type: '{{tools.allocation_type}}'
+      - name: delete-cost-allocation
+        method: DELETE
+        description: Deletes a cost allocation rule
+        inputParameters:
+        - name: allocation_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the cost allocation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: anomalies
+      path: /v1/anomalies
+      description: Cloud cost anomaly detection
+      operations:
+      - name: list-anomalies
+        method: GET
+        description: Returns a list of detected cloud cost anomalies
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          required: false
+          description: Filter by anomaly status
+        - name: cloud_provider
+          in: query
+          type: string
+          required: false
+          description: Filter by cloud provider
+        - name: start_date
+          in: query
+          type: string
+          required: false
+          description: Filter anomalies from this date
+        - name: end_date
+          in: query
+          type: string
+          required: false
+          description: Filter anomalies up to this date
+        - name: page_token
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-anomaly
+        method: GET
+        description: Returns details of a specific cost anomaly
+        inputParameters:
+        - name: anomaly_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the anomaly
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: acknowledge-anomaly
+        method: POST
+        description: Marks an anomaly as acknowledged
+        inputParameters:
+        - name: anomaly_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the anomaly
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            comment: '{{tools.comment}}'
+    - name: commitments
+      path: /v1/commitments
+      description: Cloud commitment management
+      operations:
+      - name: list-commitments
+        method: GET
+        description: Returns a list of cloud commitment purchases
+        inputParameters:
+        - name: cloud_provider
+          in: query
+          type: string
+          required: false
+          description: Filter by cloud provider
+        - name: status
+          in: query
+          type: string
+          required: false
+          description: Filter by commitment status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: get-commitment
+        method: GET
+        description: Returns details of a specific cloud commitment
+        inputParameters:
+        - name: commitment_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the commitment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: budgets
+      path: /v1/budgets
+      description: Cloud cost budgets and forecasting
+      operations:
+      - name: list-budgets
+        method: GET
+        description: Returns a list of cloud cost budgets
+        inputParameters:
+        - name: page_token
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-budget
+        method: POST
+        description: Creates a new cloud cost budget
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            amount: '{{tools.amount}}'
+            period: '{{tools.period}}'
+            alert_thresholds: '{{tools.alert_thresholds}}'
+      - name: get-budget
+        method: GET
+        description: Returns details of a specific budget
+        inputParameters:
+        - name: budget_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the budget
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-budget
+        method: PUT
+        description: Updates an existing cloud cost budget
+        inputParameters:
+        - name: budget_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the budget
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            amount: '{{tools.amount}}'
+      - name: delete-budget
+        method: DELETE
+        description: Deletes a cloud cost budget
+        inputParameters:
+        - name: budget_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the budget
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: reports
+      path: /v1/reports
+      description: Cost reporting and analytics
+      operations:
+      - name: list-reports
+        method: GET
+        description: Returns a list of saved cost reports
+        inputParameters:
+        - name: page_token
+          in: query
+          type: string
+          required: false
+          description: Pagination token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: create-report
+        method: POST
+        description: Creates a new cost report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            name: '{{tools.name}}'
+            dimensions: '{{tools.dimensions}}'
+            filters: '{{tools.filters}}'
+            time_range: '{{tools.time_range}}'
+      - name: run-report
+        method: POST
+        description: Executes a saved report and returns cost data
+        inputParameters:
+        - name: report_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier of the report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            start_date: '{{tools.start_date}}'
+            end_date: '{{tools.end_date}}'
+    - name: kubernetes
+      path: /v1/kubernetes
+      description: Kubernetes cost allocation configuration
+      operations:
+      - name: list-kubernetes-pod-labels
+        method: GET
+        description: Returns Kubernetes pod label configuration for cost allocation
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: update-kubernetes-pod-labels
+        method: PUT
+        description: Updates Kubernetes pod label configuration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        body:
+          type: json
+          data:
+            labels: '{{tools.labels}}'
   exposes:
-    - type: rest
-      port: 8080
-      namespace: ternary-cost-management-api
-      description: "Unified REST API for multi-cloud cost management and FinOps workflows."
-      resources:
-        - path: /v1/cost-allocations
-          name: cost-allocations
-          description: "Cost allocation rules for distributing shared cloud costs"
-          operations:
-            - method: GET
-              name: list-cost-allocations
-              description: "List all cost allocation rules"
-              call: "ternary.list-cost-allocations"
-              with:
-                page_size: "rest.page_size"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-cost-allocation
-              description: "Create a new cost allocation rule"
-              call: "ternary.create-cost-allocation"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/cost-allocations/{allocation_id}
-          name: cost-allocation
-          description: "Manage a specific cost allocation rule"
-          operations:
-            - method: GET
-              name: get-cost-allocation
-              description: "Get details of a cost allocation rule"
-              call: "ternary.get-cost-allocation"
-              with:
-                allocation_id: "rest.allocation_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: PUT
-              name: update-cost-allocation
-              description: "Update a cost allocation rule"
-              call: "ternary.update-cost-allocation"
-              with:
-                allocation_id: "rest.allocation_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: DELETE
-              name: delete-cost-allocation
-              description: "Delete a cost allocation rule"
-              call: "ternary.delete-cost-allocation"
-              with:
-                allocation_id: "rest.allocation_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/anomalies
-          name: anomalies
-          description: "Cloud cost anomalies detected by ML algorithms"
-          operations:
-            - method: GET
-              name: list-anomalies
-              description: "List detected cost anomalies"
-              call: "ternary.list-anomalies"
-              with:
-                status: "rest.status"
-                cloud_provider: "rest.cloud_provider"
-                start_date: "rest.start_date"
-                end_date: "rest.end_date"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/anomalies/{anomaly_id}
-          name: anomaly
-          description: "Manage a specific cost anomaly"
-          operations:
-            - method: GET
-              name: get-anomaly
-              description: "Get details of a specific anomaly"
-              call: "ternary.get-anomaly"
-              with:
-                anomaly_id: "rest.anomaly_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/anomalies/{anomaly_id}/acknowledge
-          name: acknowledge-anomaly
-          description: "Acknowledge a detected anomaly"
-          operations:
-            - method: POST
-              name: acknowledge-anomaly
-              description: "Acknowledge a cost anomaly"
-              call: "ternary.acknowledge-anomaly"
-              with:
-                anomaly_id: "rest.anomaly_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/commitments
-          name: commitments
-          description: "Cloud commitment purchases and discount tracking"
-          operations:
-            - method: GET
-              name: list-commitments
-              description: "List cloud commitments with utilization data"
-              call: "ternary.list-commitments"
-              with:
-                cloud_provider: "rest.cloud_provider"
-                status: "rest.status"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/commitments/{commitment_id}
-          name: commitment
-          description: "Details for a specific commitment"
-          operations:
-            - method: GET
-              name: get-commitment
-              description: "Get details of a commitment"
-              call: "ternary.get-commitment"
-              with:
-                commitment_id: "rest.commitment_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/budgets
-          name: budgets
-          description: "Cloud cost budgets with spend thresholds"
-          operations:
-            - method: GET
-              name: list-budgets
-              description: "List cloud cost budgets"
-              call: "ternary.list-budgets"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-budget
-              description: "Create a new cloud cost budget"
-              call: "ternary.create-budget"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/budgets/{budget_id}
-          name: budget
-          description: "Manage a specific budget"
-          operations:
-            - method: GET
-              name: get-budget
-              description: "Get details of a budget"
-              call: "ternary.get-budget"
-              with:
-                budget_id: "rest.budget_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: PUT
-              name: update-budget
-              description: "Update a cloud cost budget"
-              call: "ternary.update-budget"
-              with:
-                budget_id: "rest.budget_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: DELETE
-              name: delete-budget
-              description: "Delete a cloud cost budget"
-              call: "ternary.delete-budget"
-              with:
-                budget_id: "rest.budget_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/reports
-          name: reports
-          description: "Cost reports and analytics"
-          operations:
-            - method: GET
-              name: list-reports
-              description: "List saved cost reports"
-              call: "ternary.list-reports"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: POST
-              name: create-report
-              description: "Create a new cost report"
-              call: "ternary.create-report"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/reports/{report_id}/data
-          name: report-data
-          description: "Execute a saved report"
-          operations:
-            - method: POST
-              name: run-report
-              description: "Execute a saved report and retrieve cost data"
-              call: "ternary.run-report"
-              with:
-                report_id: "rest.report_id"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-        - path: /v1/kubernetes/pod-labels
-          name: kubernetes-pod-labels
-          description: "Kubernetes pod label configuration for cost allocation"
-          operations:
-            - method: GET
-              name: list-kubernetes-pod-labels
-              description: "Get Kubernetes pod label configuration"
-              call: "ternary.list-kubernetes-pod-labels"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-            - method: PUT
-              name: update-kubernetes-pod-labels
-              description: "Update Kubernetes pod label configuration"
-              call: "ternary.update-kubernetes-pod-labels"
-              outputParameters:
-                - type: object
-                  mapping: "$."
-
-    - type: mcp
-      port: 9090
-      namespace: ternary-cost-management-mcp
-      transport: http
-      description: "MCP server for AI-assisted cloud cost management and FinOps workflows."
-      tools:
-        - name: list-cost-allocations
-          description: "List all cost allocation rules for distributing shared cloud costs across teams"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-cost-allocations"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: create-cost-allocation
-          description: "Create a new cost allocation rule to distribute shared cloud costs"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: false
-          call: "ternary.create-cost-allocation"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-cost-allocation
-          description: "Get details of a specific cost allocation rule"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.get-cost-allocation"
-          with:
-            allocation_id: "tools.allocation_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: update-cost-allocation
-          description: "Update an existing cost allocation rule"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: true
-          call: "ternary.update-cost-allocation"
-          with:
-            allocation_id: "tools.allocation_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: delete-cost-allocation
-          description: "Delete a cost allocation rule"
-          hints:
-            readOnly: false
-            destructive: true
-            idempotent: true
-          call: "ternary.delete-cost-allocation"
-          with:
-            allocation_id: "tools.allocation_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-anomalies
-          description: "List detected cloud cost anomalies with optional filters by status, provider, and date range"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-anomalies"
-          with:
-            status: "tools.status"
-            cloud_provider: "tools.cloud_provider"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-anomaly
-          description: "Get full details of a specific cloud cost anomaly including affected resources"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.get-anomaly"
-          with:
-            anomaly_id: "tools.anomaly_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: acknowledge-anomaly
-          description: "Acknowledge a cost anomaly to indicate the team is aware of the spike"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: true
-          call: "ternary.acknowledge-anomaly"
-          with:
-            anomaly_id: "tools.anomaly_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-commitments
-          description: "List cloud commitment purchases (RIs, Savings Plans, CUDs) with utilization"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-commitments"
-          with:
-            cloud_provider: "tools.cloud_provider"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-commitment
-          description: "Get details of a specific cloud commitment including utilization and savings"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.get-commitment"
-          with:
-            commitment_id: "tools.commitment_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-budgets
-          description: "List cloud cost budgets with current spend and forecasted amounts"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-budgets"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: create-budget
-          description: "Create a new cloud cost budget with alert thresholds"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: false
-          call: "ternary.create-budget"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-budget
-          description: "Get a specific budget with current spend vs target"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.get-budget"
-          with:
-            budget_id: "tools.budget_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: update-budget
-          description: "Update an existing cloud cost budget"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: true
-          call: "ternary.update-budget"
-          with:
-            budget_id: "tools.budget_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: delete-budget
-          description: "Delete a cloud cost budget"
-          hints:
-            readOnly: false
-            destructive: true
-            idempotent: true
-          call: "ternary.delete-budget"
-          with:
-            budget_id: "tools.budget_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: list-reports
-          description: "List saved cost reports and dashboards"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-reports"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: run-report
-          description: "Execute a saved cost report and retrieve the resulting cost breakdown data"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.run-report"
-          with:
-            report_id: "tools.report_id"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: get-kubernetes-pod-labels
-          description: "Get Kubernetes pod label configuration used for cost allocation across clusters"
-          hints:
-            readOnly: true
-            openWorld: false
-          call: "ternary.list-kubernetes-pod-labels"
-          outputParameters:
-            - type: object
-              mapping: "$."
-        - name: update-kubernetes-pod-labels
-          description: "Update Kubernetes pod label configuration for cost allocation"
-          hints:
-            readOnly: false
-            destructive: false
-            idempotent: true
-          call: "ternary.update-kubernetes-pod-labels"
-          outputParameters:
-            - type: object
-              mapping: "$."
+  - type: rest
+    port: 8080
+    namespace: ternary-cost-management-api
+    description: Unified REST API for multi-cloud cost management and FinOps workflows.
+    resources:
+    - path: /v1/cost-allocations
+      name: cost-allocations
+      description: Cost allocation rules for distributing shared cloud costs
+      operations:
+      - method: GET
+        name: list-cost-allocations
+        description: List all cost allocation rules
+        call: ternary.list-cost-allocations
+        with:
+          page_size: rest.page_size
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-cost-allocation
+        description: Create a new cost allocation rule
+        call: ternary.create-cost-allocation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/cost-allocations/{allocation_id}
+      name: cost-allocation
+      description: Manage a specific cost allocation rule
+      operations:
+      - method: GET
+        name: get-cost-allocation
+        description: Get details of a cost allocation rule
+        call: ternary.get-cost-allocation
+        with:
+          allocation_id: rest.allocation_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: update-cost-allocation
+        description: Update a cost allocation rule
+        call: ternary.update-cost-allocation
+        with:
+          allocation_id: rest.allocation_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete-cost-allocation
+        description: Delete a cost allocation rule
+        call: ternary.delete-cost-allocation
+        with:
+          allocation_id: rest.allocation_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/anomalies
+      name: anomalies
+      description: Cloud cost anomalies detected by ML algorithms
+      operations:
+      - method: GET
+        name: list-anomalies
+        description: List detected cost anomalies
+        call: ternary.list-anomalies
+        with:
+          status: rest.status
+          cloud_provider: rest.cloud_provider
+          start_date: rest.start_date
+          end_date: rest.end_date
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/anomalies/{anomaly_id}
+      name: anomaly
+      description: Manage a specific cost anomaly
+      operations:
+      - method: GET
+        name: get-anomaly
+        description: Get details of a specific anomaly
+        call: ternary.get-anomaly
+        with:
+          anomaly_id: rest.anomaly_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/anomalies/{anomaly_id}/acknowledge
+      name: acknowledge-anomaly
+      description: Acknowledge a detected anomaly
+      operations:
+      - method: POST
+        name: acknowledge-anomaly
+        description: Acknowledge a cost anomaly
+        call: ternary.acknowledge-anomaly
+        with:
+          anomaly_id: rest.anomaly_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/commitments
+      name: commitments
+      description: Cloud commitment purchases and discount tracking
+      operations:
+      - method: GET
+        name: list-commitments
+        description: List cloud commitments with utilization data
+        call: ternary.list-commitments
+        with:
+          cloud_provider: rest.cloud_provider
+          status: rest.status
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/commitments/{commitment_id}
+      name: commitment
+      description: Details for a specific commitment
+      operations:
+      - method: GET
+        name: get-commitment
+        description: Get details of a commitment
+        call: ternary.get-commitment
+        with:
+          commitment_id: rest.commitment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/budgets
+      name: budgets
+      description: Cloud cost budgets with spend thresholds
+      operations:
+      - method: GET
+        name: list-budgets
+        description: List cloud cost budgets
+        call: ternary.list-budgets
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-budget
+        description: Create a new cloud cost budget
+        call: ternary.create-budget
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/budgets/{budget_id}
+      name: budget
+      description: Manage a specific budget
+      operations:
+      - method: GET
+        name: get-budget
+        description: Get details of a budget
+        call: ternary.get-budget
+        with:
+          budget_id: rest.budget_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: update-budget
+        description: Update a cloud cost budget
+        call: ternary.update-budget
+        with:
+          budget_id: rest.budget_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: delete-budget
+        description: Delete a cloud cost budget
+        call: ternary.delete-budget
+        with:
+          budget_id: rest.budget_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports
+      name: reports
+      description: Cost reports and analytics
+      operations:
+      - method: GET
+        name: list-reports
+        description: List saved cost reports
+        call: ternary.list-reports
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: create-report
+        description: Create a new cost report
+        call: ternary.create-report
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports/{report_id}/data
+      name: report-data
+      description: Execute a saved report
+      operations:
+      - method: POST
+        name: run-report
+        description: Execute a saved report and retrieve cost data
+        call: ternary.run-report
+        with:
+          report_id: rest.report_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/kubernetes/pod-labels
+      name: kubernetes-pod-labels
+      description: Kubernetes pod label configuration for cost allocation
+      operations:
+      - method: GET
+        name: list-kubernetes-pod-labels
+        description: Get Kubernetes pod label configuration
+        call: ternary.list-kubernetes-pod-labels
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: update-kubernetes-pod-labels
+        description: Update Kubernetes pod label configuration
+        call: ternary.update-kubernetes-pod-labels
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: ternary-cost-management-mcp
+    transport: http
+    description: MCP server for AI-assisted cloud cost management and FinOps workflows.
+    tools:
+    - name: list-cost-allocations
+      description: List all cost allocation rules for distributing shared cloud costs across teams
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-cost-allocations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-cost-allocation
+      description: Create a new cost allocation rule to distribute shared cloud costs
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ternary.create-cost-allocation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-cost-allocation
+      description: Get details of a specific cost allocation rule
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.get-cost-allocation
+      with:
+        allocation_id: tools.allocation_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-cost-allocation
+      description: Update an existing cost allocation rule
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: ternary.update-cost-allocation
+      with:
+        allocation_id: tools.allocation_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-cost-allocation
+      description: Delete a cost allocation rule
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ternary.delete-cost-allocation
+      with:
+        allocation_id: tools.allocation_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-anomalies
+      description: List detected cloud cost anomalies with optional filters by status, provider, and date range
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-anomalies
+      with:
+        status: tools.status
+        cloud_provider: tools.cloud_provider
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-anomaly
+      description: Get full details of a specific cloud cost anomaly including affected resources
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.get-anomaly
+      with:
+        anomaly_id: tools.anomaly_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: acknowledge-anomaly
+      description: Acknowledge a cost anomaly to indicate the team is aware of the spike
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: ternary.acknowledge-anomaly
+      with:
+        anomaly_id: tools.anomaly_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-commitments
+      description: List cloud commitment purchases (RIs, Savings Plans, CUDs) with utilization
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-commitments
+      with:
+        cloud_provider: tools.cloud_provider
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-commitment
+      description: Get details of a specific cloud commitment including utilization and savings
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.get-commitment
+      with:
+        commitment_id: tools.commitment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-budgets
+      description: List cloud cost budgets with current spend and forecasted amounts
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-budgets
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-budget
+      description: Create a new cloud cost budget with alert thresholds
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ternary.create-budget
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-budget
+      description: Get a specific budget with current spend vs target
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.get-budget
+      with:
+        budget_id: tools.budget_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-budget
+      description: Update an existing cloud cost budget
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: ternary.update-budget
+      with:
+        budget_id: tools.budget_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-budget
+      description: Delete a cloud cost budget
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: ternary.delete-budget
+      with:
+        budget_id: tools.budget_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: list-reports
+      description: List saved cost reports and dashboards
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-reports
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: run-report
+      description: Execute a saved cost report and retrieve the resulting cost breakdown data
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.run-report
+      with:
+        report_id: tools.report_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-kubernetes-pod-labels
+      description: Get Kubernetes pod label configuration used for cost allocation across clusters
+      hints:
+        readOnly: true
+        openWorld: false
+      call: ternary.list-kubernetes-pod-labels
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-kubernetes-pod-labels
+      description: Update Kubernetes pod label configuration for cost allocation
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: ternary.update-kubernetes-pod-labels
+      outputParameters:
+      - type: object
+        mapping: $.
