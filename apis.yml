@@ -63,6 +63,20 @@ common:
   - type: Vocabulary
     url: >-
       https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/vocabulary/ternary-vocabulary.yml
+  - type: Integrations
+    url: https://ternary.app/integrations/
+integrations:
+  - name: cloud Alibaba Cloud
+  - name: stacks Bring Your Own
+  - name: cloud AWS
+  - name: stacks FOCUS
+  - name: cloud Azure
+  - name: stacks Kubernetes
+  - name: cloud Google Cloud
+  - name: stacks Snowflake
+  - name: cloud Oracle Cloud
+  - name: tenancy Managed Service Providers
+  - name: diversity_3 Partner Program
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
