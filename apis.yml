@@ -39,9 +39,9 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.ternary.app/
-      - type: API Reference
+      - type: APIReference
         url: https://docs.ternary.app/reference
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.ternary.app/docs/using-the-api
       - type: OpenAPI
         url: >-
