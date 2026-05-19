@@ -1,0 +1,171 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Ternary API — Reporting
+  description: 'Ternary API — Reporting. 3 operations. Lead operation: List Reports. Self-contained Naftiko capability covering
+    one Ternary business surface.'
+  tags:
+  - Ternary
+  - Reporting
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TERNARY_API_KEY: TERNARY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ternary-reporting
+    baseUri: https://api.ternary.app
+    description: Ternary API — Reporting business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-reports
+      path: /v1/reports
+      operations:
+      - name: listreports
+        method: GET
+        description: List Reports
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page_token
+          in: query
+          type: string
+          description: Token for paginating through results
+        - name: page_size
+          in: query
+          type: integer
+          description: Number of results per page
+      - name: createreport
+        method: POST
+        description: Create Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: v1-reports-report_id-data
+      path: /v1/reports/{report_id}/data
+      operations:
+      - name: runreport
+        method: POST
+        description: Run Report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: report_id
+          in: path
+          type: string
+          description: The unique identifier of the report
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.TERNARY_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: ternary-reporting-rest
+    port: 8080
+    description: REST adapter for Ternary API — Reporting. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v1/reports
+      name: v1-reports
+      description: REST surface for v1-reports.
+      operations:
+      - method: GET
+        name: listreports
+        description: List Reports
+        call: ternary-reporting.listreports
+        with:
+          page_token: rest.page_token
+          page_size: rest.page_size
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createreport
+        description: Create Report
+        call: ternary-reporting.createreport
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/reports/{report-id}/data
+      name: v1-reports-report-id-data
+      description: REST surface for v1-reports-report_id-data.
+      operations:
+      - method: POST
+        name: runreport
+        description: Run Report
+        call: ternary-reporting.runreport
+        with:
+          report_id: rest.report_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ternary-reporting-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Ternary API — Reporting. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: list-reports
+      description: List Reports
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ternary-reporting.listreports
+      with:
+        page_token: tools.page_token
+        page_size: tools.page_size
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-report
+      description: Create Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ternary-reporting.createreport
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: run-report
+      description: Run Report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ternary-reporting.runreport
+      with:
+        report_id: tools.report_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

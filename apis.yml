@@ -1,82 +1,85 @@
 aid: ternary
 name: Ternary
-description: >-
-  Ternary is a multi-cloud FinOps platform providing cost visibility, anomaly
-  detection, commitment management, forecasting, and Kubernetes cost allocation
-  for cloud environments. Originally built for Google Cloud, Ternary now
-  supports AWS, Azure, and other cloud providers through its Universal Spend
-  Ledger, with a REST API for programmatic access to all platform capabilities.
+description: Ternary is a multi-cloud FinOps platform providing cost visibility, anomaly detection, commitment management,
+  forecasting, and Kubernetes cost allocation for cloud environments. Originally built for Google Cloud, Ternary now supports
+  AWS, Azure, and other cloud providers through its Universal Spend Ledger, with a REST API for programmatic access to all
+  platform capabilities.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Cloud Cost Management
-  - Cost Optimization
-  - FinOps
-  - Google Cloud
-  - Kubernetes
-  - Multi-Cloud
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml
+- Cloud Cost Management
+- Cost Optimization
+- FinOps
+- Google Cloud
+- Kubernetes
+- Multi-Cloud
+url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml
 created: '2026-03-16'
-modified: '2026-05-03'
+modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: ternary:ternary-api
-    name: Ternary API
-    description: >-
-      Ternary provides a REST API that exposes all platform capabilities
-      programmatically. Customers can automate FinOps workflows, integrate cost
-      data into CI/CD pipelines, trigger alerts based on spend thresholds, manage
-      commitments, and generate reports. Authentication uses API keys generated
-      from the platform.
-    humanURL: https://ternary.app/
-    tags:
-      - Automation
-      - Cloud Costs
-      - Cost Management
-      - FinOps
-      - REST API
-    properties:
-      - type: Documentation
-        url: https://docs.ternary.app/
-      - type: APIReference
-        url: https://docs.ternary.app/reference
-      - type: GettingStarted
-        url: https://docs.ternary.app/docs/using-the-api
-      - type: OpenAPI
-        url: >-
-          https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
-common:
-  - type: Website
-    url: https://ternary.app/
+- aid: ternary:ternary-api
+  name: Ternary API
+  description: Ternary provides a REST API that exposes all platform capabilities programmatically. Customers can automate
+    FinOps workflows, integrate cost data into CI/CD pipelines, trigger alerts based on spend thresholds, manage commitments,
+    and generate reports. Authentication uses API keys generated from the platform.
+  humanURL: https://ternary.app/
+  tags:
+  - Automation
+  - Cloud Costs
+  - Cost Management
+  - FinOps
+  - REST API
+  properties:
   - type: Documentation
     url: https://docs.ternary.app/
-  - type: GCP Integration
-    url: https://ternary.app/integrations/google-cloud-gcp/
-  - type: Kubernetes
-    url: https://ternary.app/integrations/kubernetes/
-  - type: Blog
-    url: https://ternary.app/blog/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
   - type: OpenAPI
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
-  - type: Vocabulary
-    url: >-
-      https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/vocabulary/ternary-vocabulary.yml
-  - type: Integrations
-    url: https://ternary.app/integrations/
+    url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
+  - type: NaftikoCapability
+    url: capabilities/ternary-anomaly-detection.yaml
+  - type: NaftikoCapability
+    url: capabilities/ternary-commitments.yaml
+  - type: NaftikoCapability
+    url: capabilities/ternary-cost-allocation.yaml
+  - type: NaftikoCapability
+    url: capabilities/ternary-forecasting.yaml
+  - type: NaftikoCapability
+    url: capabilities/ternary-kubernetes.yaml
+  - type: NaftikoCapability
+    url: capabilities/ternary-reporting.yaml
+common:
+- type: Website
+  url: https://ternary.app/
+- type: Documentation
+  url: https://docs.ternary.app/
+- type: GCP Integration
+  url: https://ternary.app/integrations/google-cloud-gcp/
+- type: Kubernetes
+  url: https://ternary.app/integrations/kubernetes/
+- type: Blog
+  url: https://ternary.app/blog/
+- type: OpenAPI
+  url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
+- type: Vocabulary
+  url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/vocabulary/ternary-vocabulary.yml
+- type: Integrations
+  url: https://ternary.app/integrations/
 integrations:
-  - name: cloud Alibaba Cloud
-  - name: stacks Bring Your Own
-  - name: cloud AWS
-  - name: stacks FOCUS
-  - name: cloud Azure
-  - name: stacks Kubernetes
-  - name: cloud Google Cloud
-  - name: stacks Snowflake
-  - name: cloud Oracle Cloud
-  - name: tenancy Managed Service Providers
-  - name: diversity_3 Partner Program
+- name: cloud Alibaba Cloud
+- name: stacks Bring Your Own
+- name: cloud AWS
+- name: stacks FOCUS
+- name: cloud Azure
+- name: stacks Kubernetes
+- name: cloud Google Cloud
+- name: stacks Snowflake
+- name: cloud Oracle Cloud
+- name: tenancy Managed Service Providers
+- name: diversity_3 Partner Program
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

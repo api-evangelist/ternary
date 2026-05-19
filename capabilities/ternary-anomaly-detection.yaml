@@ -1,0 +1,202 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Ternary API — Anomaly Detection
+  description: 'Ternary API — Anomaly Detection. 3 operations. Lead operation: List Anomalies. Self-contained Naftiko capability
+    covering one Ternary business surface.'
+  tags:
+  - Ternary
+  - Anomaly Detection
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    TERNARY_API_KEY: TERNARY_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: ternary-anomaly-detection
+    baseUri: https://api.ternary.app
+    description: Ternary API — Anomaly Detection business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-anomalies
+      path: /v1/anomalies
+      operations:
+      - name: listanomalies
+        method: GET
+        description: List Anomalies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: Filter by anomaly status
+        - name: cloud_provider
+          in: query
+          type: string
+          description: Filter by cloud provider
+        - name: start_date
+          in: query
+          type: string
+          description: Filter anomalies detected on or after this date (ISO 8601)
+        - name: end_date
+          in: query
+          type: string
+          description: Filter anomalies detected on or before this date (ISO 8601)
+        - name: page_token
+          in: query
+          type: string
+          description: Token for paginating through results
+        - name: page_size
+          in: query
+          type: integer
+          description: Number of results per page
+    - name: v1-anomalies-anomaly_id
+      path: /v1/anomalies/{anomaly_id}
+      operations:
+      - name: getanomaly
+        method: GET
+        description: Get Anomaly
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: anomaly_id
+          in: path
+          type: string
+          description: The unique identifier of the anomaly
+          required: true
+    - name: v1-anomalies-anomaly_id-acknowledge
+      path: /v1/anomalies/{anomaly_id}/acknowledge
+      operations:
+      - name: acknowledgeanomaly
+        method: POST
+        description: Acknowledge Anomaly
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: anomaly_id
+          in: path
+          type: string
+          description: The unique identifier of the anomaly
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: apikey
+      key: X-API-Key
+      value: '{{env.TERNARY_API_KEY}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: ternary-anomaly-detection-rest
+    port: 8080
+    description: REST adapter for Ternary API — Anomaly Detection. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/anomalies
+      name: v1-anomalies
+      description: REST surface for v1-anomalies.
+      operations:
+      - method: GET
+        name: listanomalies
+        description: List Anomalies
+        call: ternary-anomaly-detection.listanomalies
+        with:
+          status: rest.status
+          cloud_provider: rest.cloud_provider
+          start_date: rest.start_date
+          end_date: rest.end_date
+          page_token: rest.page_token
+          page_size: rest.page_size
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/anomalies/{anomaly-id}
+      name: v1-anomalies-anomaly-id
+      description: REST surface for v1-anomalies-anomaly_id.
+      operations:
+      - method: GET
+        name: getanomaly
+        description: Get Anomaly
+        call: ternary-anomaly-detection.getanomaly
+        with:
+          anomaly_id: rest.anomaly_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/v1/anomalies/{anomaly-id}/acknowledge
+      name: v1-anomalies-anomaly-id-acknowledge
+      description: REST surface for v1-anomalies-anomaly_id-acknowledge.
+      operations:
+      - method: POST
+        name: acknowledgeanomaly
+        description: Acknowledge Anomaly
+        call: ternary-anomaly-detection.acknowledgeanomaly
+        with:
+          anomaly_id: rest.anomaly_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: ternary-anomaly-detection-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Ternary API — Anomaly Detection. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: list-anomalies
+      description: List Anomalies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ternary-anomaly-detection.listanomalies
+      with:
+        status: tools.status
+        cloud_provider: tools.cloud_provider
+        start_date: tools.start_date
+        end_date: tools.end_date
+        page_token: tools.page_token
+        page_size: tools.page_size
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-anomaly
+      description: Get Anomaly
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: ternary-anomaly-detection.getanomaly
+      with:
+        anomaly_id: tools.anomaly_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: acknowledge-anomaly
+      description: Acknowledge Anomaly
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: ternary-anomaly-detection.acknowledgeanomaly
+      with:
+        anomaly_id: tools.anomaly_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
