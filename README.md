@@ -1,89 +1,66 @@
-# Ternary
+# Ternary (ternary)
 
-Ternary is a multi-cloud FinOps platform providing cost visibility, anomaly detection, commitment management, forecasting, and Kubernetes cost allocation for cloud environments. Originally purpose-built for Google Cloud, Ternary now supports AWS, Azure, OCI, and other cloud providers through its Universal Spend Ledger. The REST API provides programmatic access to all platform capabilities.
+Ternary is a multi-cloud FinOps platform providing cost visibility, anomaly detection, commitment management, forecasting, and Kubernetes cost allocation for cloud environments. Originally built for Google Cloud, Ternary now supports AWS, Azure, and other cloud providers through its Universal Spend Ledger, with a REST API for programmatic access to all platform capabilities.
 
-**Type:** company  
-**Website:** [https://ternary.app/](https://ternary.app/)  
-**Documentation:** [https://docs.ternary.app/](https://docs.ternary.app/)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml)
+
+## Scope
+
+- **Type:** Index
 
 ## Tags
 
-Cloud Cost Management, Cost Optimization, FinOps, Google Cloud, Kubernetes, Multi-Cloud
+- Cloud Cost Management
+- Cost Optimization
+- FinOps
+- Google Cloud
+- Kubernetes
+- Multi-Cloud
+
+## Timestamps
+
+- **Created:** 2026-03-16
+- **Modified:** 2026-05-19
 
 ## APIs
 
 ### Ternary API
-Ternary provides a REST API exposing all platform capabilities programmatically. Customers can automate FinOps workflows, integrate cost data into CI/CD pipelines, trigger alerts based on spend thresholds, manage commitments, and generate reports. Authentication uses API keys generated from the platform.
 
-- **Documentation:** [https://docs.ternary.app/](https://docs.ternary.app/)
-- **API Reference:** [https://docs.ternary.app/reference](https://docs.ternary.app/reference)
-- **OpenAPI:** [openapi/ternary-openapi.yml](openapi/ternary-openapi.yml)
+Ternary provides a REST API that exposes all platform capabilities programmatically. Customers can automate FinOps workflows, integrate cost data into CI/CD pipelines, trigger alerts based on spend thresholds, manage commitments, and generate reports. Authentication uses API keys generated from the platform.
 
-## OpenAPI Specifications
+- **Human URL:** [https://ternary.app/](https://ternary.app/)
 
-| Spec | Description |
-|---|---|
-| [ternary-openapi.yml](openapi/ternary-openapi.yml) | Ternary REST API - cost allocation, anomalies, commitments, budgets, reports, Kubernetes |
+#### Tags
 
-## Spectral Rules
+- Automation
+- Cloud Costs
+- Cost Management
+- FinOps
+- REST API
 
-| Ruleset | Description |
-|---|---|
-| [ternary-rules.yml](rules/ternary-rules.yml) | Spectral rules enforcing Ternary API conventions |
+#### Properties
 
-## Naftiko Capabilities
+- [Documentation](https://docs.ternary.app/)
+- [API Reference](https://docs.ternary.app/reference)
+- [Getting Started](https://docs.ternary.app/docs/using-the-api)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Postman Collection](collections/ternary.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/ternary.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
 
-### Shared Definitions
+## Common Properties
 
-| File | Description |
-|---|---|
-| [capabilities/shared/ternary.yaml](capabilities/shared/ternary.yaml) | Ternary API consumed definition |
-
-### Workflow Capabilities
-
-| File | Description |
-|---|---|
-| [capabilities/cloud-cost-management.yaml](capabilities/cloud-cost-management.yaml) | Full FinOps workflow (anomalies, budgets, commitments, allocations, reports, Kubernetes) |
-
-## JSON Schemas
-
-| Schema | Description |
-|---|---|
-| [ternary-anomaly-schema.json](json-schema/ternary-anomaly-schema.json) | Cloud cost anomaly schema |
-| [ternary-budget-schema.json](json-schema/ternary-budget-schema.json) | Cloud cost budget schema |
-
-## JSON Structures
-
-| Structure | Description |
-|---|---|
-| [ternary-anomaly-structure.json](json-structure/ternary-anomaly-structure.json) | Anomaly field documentation |
-
-## JSON-LD
-
-| Context | Description |
-|---|---|
-| [ternary-context.jsonld](json-ld/ternary-context.jsonld) | JSON-LD context for FinOps and cloud cost concepts |
-
-## Examples
-
-| Example | Description |
-|---|---|
-| [ternary-list-anomalies-example.json](examples/ternary-list-anomalies-example.json) | List cost anomalies request/response |
-| [ternary-create-budget-example.json](examples/ternary-create-budget-example.json) | Create budget request/response |
-
-## Vocabulary
-
-| Vocabulary | Description |
-|---|---|
-| [ternary-vocabulary.yml](vocabulary/ternary-vocabulary.yml) | FinOps and cloud cost management vocabulary |
-
-## Links
-
-- **GCP Integration:** [https://ternary.app/integrations/google-cloud-gcp/](https://ternary.app/integrations/google-cloud-gcp/)
-- **Kubernetes:** [https://ternary.app/integrations/kubernetes/](https://ternary.app/integrations/kubernetes/)
-- **Blog:** [https://ternary.app/blog/](https://ternary.app/blog/)
+- [LinkedIn](https://www.linkedin.com/company/ternaryinc)
+- [Website](https://ternary.app/)
+- [Documentation](https://docs.ternary.app/)
+- [G C P  Integration](https://ternary.app/integrations/google-cloud-gcp/)
+- [Kubernetes](https://ternary.app/integrations/kubernetes/)
+- [Blog](https://ternary.app/blog/)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [Vocabulary](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/vocabulary/ternary-vocabulary.yml)
+- [Integrations](https://ternary.app/integrations/)
+- [L L Ms Txt](https://docs.ternary.app/llms.txt)
 
 ## Maintainers
 
-**FN:** Kin Lane  
+**FN:** Kin Lane
 **Email:** kin@apievangelist.com

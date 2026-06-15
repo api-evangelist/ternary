@@ -1,0 +1,498 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ternary API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cost Allocation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Cost Allocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/cost-allocations",
+            "params": [
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of cost allocation rules defined in the platform for distributing shared costs across teams, projects, or cost centers."
+        },
+        {
+          "info": {
+            "name": "Create Cost Allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/cost-allocations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cost allocation rule for distributing shared cloud costs across cost centers, teams, or projects."
+        },
+        {
+          "info": {
+            "name": "Get Cost Allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/cost-allocations/:allocation_id",
+            "params": [
+              {
+                "name": "allocation_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the cost allocation rule"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific cost allocation rule."
+        },
+        {
+          "info": {
+            "name": "Update Cost Allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ternary.app/v1/cost-allocations/:allocation_id",
+            "params": [
+              {
+                "name": "allocation_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the cost allocation rule"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing cost allocation rule."
+        },
+        {
+          "info": {
+            "name": "Delete Cost Allocation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ternary.app/v1/cost-allocations/:allocation_id",
+            "params": [
+              {
+                "name": "allocation_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the cost allocation rule"
+              }
+            ]
+          },
+          "docs": "Deletes a cost allocation rule from the platform."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Anomaly Detection",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Anomalies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/anomalies",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by anomaly status"
+              },
+              {
+                "name": "cloud_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by cloud provider"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter anomalies detected on or after this date (ISO 8601)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter anomalies detected on or before this date (ISO 8601)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of detected cloud cost anomalies. Anomalies are identified using ML-powered algorithms that detect unexpected spikes or drops in cloud spend."
+        },
+        {
+          "info": {
+            "name": "Get Anomaly",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/anomalies/:anomaly_id",
+            "params": [
+              {
+                "name": "anomaly_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the anomaly"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific cost anomaly including affected resources."
+        },
+        {
+          "info": {
+            "name": "Acknowledge Anomaly",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/anomalies/:anomaly_id/acknowledge",
+            "params": [
+              {
+                "name": "anomaly_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the anomaly"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks an anomaly as acknowledged, indicating the team is aware of the cost spike."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Commitments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Commitments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/commitments",
+            "params": [
+              {
+                "name": "cloud_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by cloud provider"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by commitment status"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              }
+            ]
+          },
+          "docs": "Returns a list of cloud commitment purchases (Reserved Instances, Savings Plans, Committed Use Discounts) managed by Ternary."
+        },
+        {
+          "info": {
+            "name": "Get Commitment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/commitments/:commitment_id",
+            "params": [
+              {
+                "name": "commitment_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the commitment"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific cloud commitment purchase."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Forecasting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Budgets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/budgets",
+            "params": [
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of cloud cost budgets configured in the platform, with current spend versus budget targets."
+        },
+        {
+          "info": {
+            "name": "Create Budget",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/budgets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cloud cost budget with defined spend thresholds and alerts."
+        },
+        {
+          "info": {
+            "name": "Get Budget",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/budgets/:budget_id",
+            "params": [
+              {
+                "name": "budget_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the budget"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific cloud cost budget."
+        },
+        {
+          "info": {
+            "name": "Update Budget",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ternary.app/v1/budgets/:budget_id",
+            "params": [
+              {
+                "name": "budget_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the budget"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing cloud cost budget."
+        },
+        {
+          "info": {
+            "name": "Delete Budget",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.ternary.app/v1/budgets/:budget_id",
+            "params": [
+              {
+                "name": "budget_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the budget"
+              }
+            ]
+          },
+          "docs": "Deletes a cloud cost budget from the platform."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reporting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/reports",
+            "params": [
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of saved cost reports and dashboards."
+        },
+        {
+          "info": {
+            "name": "Create Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/reports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cost report with defined dimensions, filters, and time range."
+        },
+        {
+          "info": {
+            "name": "Run Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/reports/:report_id/data",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved report with optional parameter overrides and returns the resulting cost data."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Kubernetes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Kubernetes Pod Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/kubernetes/pod-labels"
+          },
+          "docs": "Returns the Kubernetes pod label configuration used for cost allocation across clusters."
+        },
+        {
+          "info": {
+            "name": "Update Kubernetes Pod Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ternary.app/v1/kubernetes/pod-labels",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the Kubernetes pod label configuration for cost allocation. Pod labels are used to map Kubernetes workload costs to cost centers and teams."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
