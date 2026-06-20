@@ -6,7 +6,7 @@ description: >-
   supports AWS, Azure, and other cloud providers through its Universal Spend Ledger, with a REST API for programmatic
   access to all platform capabilities.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Cloud Cost Management
   - Cost Optimization
