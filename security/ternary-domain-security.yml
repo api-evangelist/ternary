@@ -1,0 +1,21 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: ternary.app
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 20 03:48:44 2026 GMT
+  hsts: false
+- host: api.ternary.app
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  2 03:27:50 2026 GMT
+  hsts: null
+domains:
+- domain: ternary.app
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

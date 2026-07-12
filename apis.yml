@@ -42,6 +42,10 @@ apis:
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
 common:
+  - type: DomainSecurity
+    url: security/ternary-domain-security.yml
+  - type: Authentication
+    url: authentication/ternary-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/ternaryinc
   - type: Website
