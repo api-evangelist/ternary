@@ -42,6 +42,8 @@ apis:
       - type: OpenAPI
         url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
 common:
+  - type: AgenticAccess
+    url: agentic-access/ternary-agentic-access.yml
   - type: DomainSecurity
     url: security/ternary-domain-security.yml
   - type: Authentication
