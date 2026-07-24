@@ -1,0 +1,236 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection Reporting API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Reporting
+  description: Cost reports, dashboards, and analytics
+paths:
+  /v1/reports:
+    get:
+      operationId: listReports
+      summary: List Reports
+      description: Returns a list of saved cost reports and dashboards.
+      tags:
+      - Reporting
+      parameters:
+      - name: page_token
+        in: query
+        description: Token for paginating through results
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Reports retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createReport
+      summary: Create Report
+      description: Creates a new cost report with defined dimensions, filters, and time range.
+      tags:
+      - Reporting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '201':
+          description: Report created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/reports/{report_id}/data:
+    post:
+      operationId: runReport
+      summary: Run Report
+      description: Executes a saved report with optional parameter overrides and returns the resulting cost data.
+      tags:
+      - Reporting
+      parameters:
+      - name: report_id
+        in: path
+        required: true
+        description: The unique identifier of the report
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                  description: Override report start date
+                end_date:
+                  type: string
+                  format: date
+                  description: Override report end date
+      responses:
+        '200':
+          description: Report executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportData'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    Report:
+      type: object
+      description: A saved cost report configuration
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          description: Cost dimensions to group by
+          items:
+            type: string
+        filters:
+          type: object
+          description: Filter criteria for the report
+          additionalProperties: true
+        time_range:
+          type: string
+          description: Default time range for the report
+          enum:
+          - last_7_days
+          - last_30_days
+          - last_90_days
+          - month_to_date
+          - year_to_date
+        created_at:
+          type: string
+          format: date-time
+    ReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ReportRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          items:
+            type: string
+        filters:
+          type: object
+          additionalProperties: true
+        time_range:
+          type: string
+          enum:
+          - last_7_days
+          - last_30_days
+          - last_90_days
+          - month_to_date
+          - year_to_date
+    ReportData:
+      type: object
+      description: Executed report data with cost breakdown results
+      properties:
+        report_id:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_cost:
+          type: number
+          description: Total cost for the time period
+        rows:
+          type: array
+          description: Cost data rows grouped by dimensions
+          items:
+            type: object
+            additionalProperties: true
+        generated_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/

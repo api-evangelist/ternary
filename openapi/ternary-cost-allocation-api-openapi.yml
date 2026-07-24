@@ -1,0 +1,271 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection Cost Allocation API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Cost Allocation
+  description: Manage cost allocation rules, cost centers, and labels
+paths:
+  /v1/cost-allocations:
+    get:
+      operationId: listCostAllocations
+      summary: List Cost Allocations
+      description: Returns a list of cost allocation rules defined in the platform for distributing shared costs across teams, projects, or cost centers.
+      tags:
+      - Cost Allocation
+      parameters:
+      - name: page_token
+        in: query
+        description: Token for paginating through results
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 50
+          maximum: 200
+      responses:
+        '200':
+          description: Cost allocations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocationListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createCostAllocation
+      summary: Create Cost Allocation
+      description: Creates a new cost allocation rule for distributing shared cloud costs across cost centers, teams, or projects.
+      tags:
+      - Cost Allocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CostAllocationRequest'
+      responses:
+        '201':
+          description: Cost allocation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/cost-allocations/{allocation_id}:
+    get:
+      operationId: getCostAllocation
+      summary: Get Cost Allocation
+      description: Returns details of a specific cost allocation rule.
+      tags:
+      - Cost Allocation
+      parameters:
+      - name: allocation_id
+        in: path
+        required: true
+        description: The unique identifier of the cost allocation rule
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Cost allocation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateCostAllocation
+      summary: Update Cost Allocation
+      description: Updates an existing cost allocation rule.
+      tags:
+      - Cost Allocation
+      parameters:
+      - name: allocation_id
+        in: path
+        required: true
+        description: The unique identifier of the cost allocation rule
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CostAllocationRequest'
+      responses:
+        '200':
+          description: Cost allocation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteCostAllocation
+      summary: Delete Cost Allocation
+      description: Deletes a cost allocation rule from the platform.
+      tags:
+      - Cost Allocation
+      parameters:
+      - name: allocation_id
+        in: path
+        required: true
+        description: The unique identifier of the cost allocation rule
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Cost allocation deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  schemas:
+    CostAllocation:
+      type: object
+      description: A cost allocation rule for distributing shared cloud costs
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the allocation rule
+        name:
+          type: string
+          description: Human-readable name for the allocation rule
+        description:
+          type: string
+          description: Description of what this allocation rule does
+        allocation_type:
+          type: string
+          description: Type of cost allocation
+          enum:
+          - proportional
+          - fixed
+          - even
+        source_labels:
+          type: array
+          description: Cloud labels that identify the shared cost source
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          description: Cost centers that receive the allocated costs
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    CostAllocationListResponse:
+      type: object
+      properties:
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CostAllocation'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    CostAllocationRequest:
+      type: object
+      required:
+      - name
+      - allocation_type
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        allocation_type:
+          type: string
+          enum:
+          - proportional
+          - fixed
+          - even
+        source_labels:
+          type: array
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
+    AllocationTarget:
+      type: object
+      properties:
+        cost_center:
+          type: string
+          description: Name of the target cost center
+        percentage:
+          type: number
+          description: Percentage of cost allocated to this target (for proportional type)
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/

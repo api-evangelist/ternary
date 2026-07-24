@@ -1,0 +1,181 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection Commitments API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Commitments
+  description: Manage cloud commitment purchases and optimization
+paths:
+  /v1/commitments:
+    get:
+      operationId: listCommitments
+      summary: List Commitments
+      description: Returns a list of cloud commitment purchases (Reserved Instances, Savings Plans, Committed Use Discounts) managed by Ternary.
+      tags:
+      - Commitments
+      parameters:
+      - name: cloud_provider
+        in: query
+        description: Filter by cloud provider
+        schema:
+          type: string
+          enum:
+          - gcp
+          - aws
+          - azure
+      - name: status
+        in: query
+        description: Filter by commitment status
+        schema:
+          type: string
+          enum:
+          - active
+          - expired
+          - pending
+      - name: page_token
+        in: query
+        description: Token for paginating through results
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Commitments retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommitmentListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/commitments/{commitment_id}:
+    get:
+      operationId: getCommitment
+      summary: Get Commitment
+      description: Returns details of a specific cloud commitment purchase.
+      tags:
+      - Commitments
+      parameters:
+      - name: commitment_id
+        in: path
+        required: true
+        description: The unique identifier of the commitment
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Commitment retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commitment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    CommitmentListResponse:
+      type: object
+      properties:
+        commitments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commitment'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+    Commitment:
+      type: object
+      description: A cloud commitment purchase
+      properties:
+        id:
+          type: string
+        cloud_provider:
+          type: string
+          enum:
+          - gcp
+          - aws
+          - azure
+        commitment_type:
+          type: string
+          description: Type of commitment
+          enum:
+          - reserved_instance
+          - savings_plan
+          - committed_use_discount
+          - sustained_use_discount
+        status:
+          type: string
+          enum:
+          - active
+          - expired
+          - pending
+        resource_type:
+          type: string
+          description: Resource type covered by the commitment
+        region:
+          type: string
+          description: Cloud region where commitment applies
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        hourly_cost:
+          type: number
+          description: Hourly commitment cost
+        savings_vs_on_demand:
+          type: number
+          description: Percentage savings compared to on-demand pricing
+        utilization:
+          type: number
+          description: Current utilization percentage of the commitment
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/

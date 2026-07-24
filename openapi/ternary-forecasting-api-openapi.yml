@@ -1,0 +1,257 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection Forecasting API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Forecasting
+  description: Budget forecasting and spend projections
+paths:
+  /v1/budgets:
+    get:
+      operationId: listBudgets
+      summary: List Budgets
+      description: Returns a list of cloud cost budgets configured in the platform, with current spend versus budget targets.
+      tags:
+      - Forecasting
+      parameters:
+      - name: page_token
+        in: query
+        description: Token for paginating through results
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Budgets retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createBudget
+      summary: Create Budget
+      description: Creates a new cloud cost budget with defined spend thresholds and alerts.
+      tags:
+      - Forecasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '201':
+          description: Budget created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/budgets/{budget_id}:
+    get:
+      operationId: getBudget
+      summary: Get Budget
+      description: Returns details of a specific cloud cost budget.
+      tags:
+      - Forecasting
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: The unique identifier of the budget
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Budget retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateBudget
+      summary: Update Budget
+      description: Updates an existing cloud cost budget.
+      tags:
+      - Forecasting
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: The unique identifier of the budget
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '200':
+          description: Budget updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBudget
+      summary: Delete Budget
+      description: Deletes a cloud cost budget from the platform.
+      tags:
+      - Forecasting
+      parameters:
+      - name: budget_id
+        in: path
+        required: true
+        description: The unique identifier of the budget
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Budget deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    BudgetRequest:
+      type: object
+      required:
+      - name
+      - amount
+      - period
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        period:
+          type: string
+          enum:
+          - monthly
+          - quarterly
+          - annual
+        cloud_provider:
+          type: string
+        alert_thresholds:
+          type: array
+          items:
+            type: number
+    Budget:
+      type: object
+      description: A cloud cost budget with spend targets and alerts
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+          description: Budget amount in USD
+        period:
+          type: string
+          description: Budget period
+          enum:
+          - monthly
+          - quarterly
+          - annual
+        cloud_provider:
+          type: string
+        current_spend:
+          type: number
+          description: Current spend for the current period
+        forecasted_spend:
+          type: number
+          description: Forecasted spend for the current period
+        alert_thresholds:
+          type: array
+          description: List of alert thresholds as percentages of budget
+          items:
+            type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    BudgetListResponse:
+      type: object
+      properties:
+        budgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Budget'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/

@@ -1,0 +1,244 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Anomaly Detection
+  description: Manage and query cloud cost anomalies
+paths:
+  /v1/anomalies:
+    get:
+      operationId: listAnomalies
+      summary: List Anomalies
+      description: Returns a list of detected cloud cost anomalies. Anomalies are identified using ML-powered algorithms that detect unexpected spikes or drops in cloud spend.
+      tags:
+      - Anomaly Detection
+      parameters:
+      - name: status
+        in: query
+        description: Filter by anomaly status
+        schema:
+          type: string
+          enum:
+          - open
+          - acknowledged
+          - resolved
+      - name: cloud_provider
+        in: query
+        description: Filter by cloud provider
+        schema:
+          type: string
+          enum:
+          - gcp
+          - aws
+          - azure
+          - oci
+      - name: start_date
+        in: query
+        description: Filter anomalies detected on or after this date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: end_date
+        in: query
+        description: Filter anomalies detected on or before this date (ISO 8601)
+        schema:
+          type: string
+          format: date
+      - name: page_token
+        in: query
+        description: Token for paginating through results
+        schema:
+          type: string
+      - name: page_size
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 50
+      responses:
+        '200':
+          description: Anomalies retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/anomalies/{anomaly_id}:
+    get:
+      operationId: getAnomaly
+      summary: Get Anomaly
+      description: Returns details of a specific cost anomaly including affected resources.
+      tags:
+      - Anomaly Detection
+      parameters:
+      - name: anomaly_id
+        in: path
+        required: true
+        description: The unique identifier of the anomaly
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Anomaly retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anomaly'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/anomalies/{anomaly_id}/acknowledge:
+    post:
+      operationId: acknowledgeAnomaly
+      summary: Acknowledge Anomaly
+      description: Marks an anomaly as acknowledged, indicating the team is aware of the cost spike.
+      tags:
+      - Anomaly Detection
+      parameters:
+      - name: anomaly_id
+        in: path
+        required: true
+        description: The unique identifier of the anomaly
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: Optional comment explaining the acknowledgement
+      responses:
+        '200':
+          description: Anomaly acknowledged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anomaly'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    Anomaly:
+      type: object
+      description: A detected cloud cost anomaly
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the anomaly
+        cloud_provider:
+          type: string
+          description: Cloud provider where the anomaly was detected
+          enum:
+          - gcp
+          - aws
+          - azure
+          - oci
+        service:
+          type: string
+          description: Cloud service that generated the anomaly
+        severity:
+          type: string
+          description: Severity level of the anomaly
+          enum:
+          - low
+          - medium
+          - high
+          - critical
+        status:
+          type: string
+          description: Current status of the anomaly
+          enum:
+          - open
+          - acknowledged
+          - resolved
+        expected_cost:
+          type: number
+          description: Expected cost amount based on historical patterns
+        actual_cost:
+          type: number
+          description: Actual observed cost that triggered the anomaly
+        cost_delta:
+          type: number
+          description: Difference between actual and expected cost
+        detected_at:
+          type: string
+          format: date-time
+          description: Timestamp when the anomaly was first detected
+        acknowledged_at:
+          type: string
+          format: date-time
+        comment:
+          type: string
+          description: Comment added when acknowledged
+        affected_resources:
+          type: array
+          description: List of cloud resources contributing to the anomaly
+          items:
+            type: string
+    AnomalyListResponse:
+      type: object
+      properties:
+        anomalies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Anomaly'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/

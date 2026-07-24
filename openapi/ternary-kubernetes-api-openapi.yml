@@ -1,0 +1,111 @@
+openapi: 3.0.3
+info:
+  title: Ternary Anomaly Detection Kubernetes API
+  description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+servers:
+- url: https://api.ternary.app
+  description: Ternary Production API
+security:
+- ApiKeyAuth: []
+tags:
+- name: Kubernetes
+  description: Kubernetes cost allocation and pod label management
+paths:
+  /v1/kubernetes/pod-labels:
+    get:
+      operationId: listKubernetesPodLabels
+      summary: List Kubernetes Pod Labels
+      description: Returns the Kubernetes pod label configuration used for cost allocation across clusters.
+      tags:
+      - Kubernetes
+      responses:
+        '200':
+          description: Pod label configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodLabelConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateKubernetesPodLabels
+      summary: Update Kubernetes Pod Labels
+      description: Updates the Kubernetes pod label configuration for cost allocation. Pod labels are used to map Kubernetes workload costs to cost centers and teams.
+      tags:
+      - Kubernetes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodLabelConfig'
+      responses:
+        '200':
+          description: Pod label configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodLabelConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  schemas:
+    PodLabelConfig:
+      type: object
+      description: Kubernetes pod label configuration for cost allocation
+      properties:
+        labels:
+          type: array
+          description: Pod label keys used for cost allocation
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: The Kubernetes label key
+              cost_dimension:
+                type: string
+                description: The Ternary cost dimension this label maps to
+              required:
+                type: boolean
+                description: Whether this label is required for cost allocation
+        updated_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/
