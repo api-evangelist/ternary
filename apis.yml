@@ -6,7 +6,20 @@ description: >-
   supports AWS, Azure, and other cloud providers through its Universal Spend Ledger, with a REST API for programmatic
   access to all platform capabilities.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/ternary.png
 tags:
   - Cloud Cost Management
   - Cost Optimization
@@ -19,28 +32,96 @@ created: '2026-03-16'
 modified: '2026-05-19'
 specificationVersion: '0.19'
 apis:
-  - aid: ternary:ternary-api
-    name: Ternary API
-    description: >-
-      Ternary provides a REST API that exposes all platform capabilities programmatically. Customers can automate FinOps
-      workflows, integrate cost data into CI/CD pipelines, trigger alerts based on spend thresholds, manage commitments,
-      and generate reports. Authentication uses API keys generated from the platform.
-    humanURL: https://ternary.app/
-    tags:
-      - Automation
-      - Cloud Costs
-      - Cost Management
-      - FinOps
-      - REST API
-    properties:
-      - type: Documentation
-        url: https://docs.ternary.app/
-      - type: APIReference
-        url: https://docs.ternary.app/reference
-      - type: GettingStarted
-        url: https://docs.ternary.app/docs/using-the-api
-      - type: OpenAPI
-        url: https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml
+- aid: ternary:ternary-anomaly-detection-api
+  name: Ternary Anomaly Detection API
+  description: Manage and query cloud cost anomalies
+  humanURL: https://ternary.app/
+  tags:
+  - Anomaly Detection
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-anomaly-detection-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
+- aid: ternary:ternary-commitments-api
+  name: Ternary Commitments API
+  description: Manage cloud commitment purchases and optimization
+  humanURL: https://ternary.app/
+  tags:
+  - Commitments
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-commitments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
+- aid: ternary:ternary-cost-allocation-api
+  name: Ternary Cost Allocation API
+  description: Manage cost allocation rules, cost centers, and labels
+  humanURL: https://ternary.app/
+  tags:
+  - Cost Allocation
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-cost-allocation-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
+- aid: ternary:ternary-forecasting-api
+  name: Ternary Forecasting API
+  description: Budget forecasting and spend projections
+  humanURL: https://ternary.app/
+  tags:
+  - Forecasting
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-forecasting-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
+- aid: ternary:ternary-kubernetes-api
+  name: Ternary Kubernetes API
+  description: Kubernetes cost allocation and pod label management
+  humanURL: https://ternary.app/
+  tags:
+  - Kubernetes
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-kubernetes-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
+- aid: ternary:ternary-reporting-api
+  name: Ternary Reporting API
+  description: Cost reports, dashboards, and analytics
+  humanURL: https://ternary.app/
+  tags:
+  - Reporting
+  properties:
+  - type: OpenAPI
+    url: openapi/ternary-reporting-api-openapi.yml
+  - type: Documentation
+    url: https://docs.ternary.app/
+  - type: APIReference
+    url: https://docs.ternary.app/reference
+  - type: GettingStarted
+    url: https://docs.ternary.app/docs/using-the-api
 common:
   - type: AgenticAccess
     url: agentic-access/ternary-agentic-access.yml
