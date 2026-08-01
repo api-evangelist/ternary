@@ -1,0 +1,1054 @@
+openapi: 3.0.3
+info:
+  title: Ternary API
+  description: >-
+    Ternary is a multi-cloud FinOps platform providing programmatic access to
+    cloud cost visibility, anomaly detection, commitment management, cost
+    allocation, forecasting, and reporting. The REST API enables automation of
+    FinOps workflows, integration of cost data into CI/CD pipelines, and
+    programmatic management of all platform capabilities. Authentication uses
+    API keys generated from the Ternary platform.
+  version: '1.0'
+  contact:
+    name: Ternary Support
+    url: https://ternary.app/contact/
+  termsOfService: https://ternary.app/terms/
+externalDocs:
+  description: Ternary API Documentation
+  url: https://docs.ternary.app/
+servers:
+  - url: 'https://api.ternary.app'
+    description: Ternary Production API
+tags:
+  - name: Cost Allocation
+    description: Manage cost allocation rules, cost centers, and labels
+  - name: Anomaly Detection
+    description: Manage and query cloud cost anomalies
+  - name: Commitments
+    description: Manage cloud commitment purchases and optimization
+  - name: Forecasting
+    description: Budget forecasting and spend projections
+  - name: Reporting
+    description: Cost reports, dashboards, and analytics
+  - name: Kubernetes
+    description: Kubernetes cost allocation and pod label management
+security:
+  - ApiKeyAuth: []
+paths:
+  /v1/cost-allocations:
+    get:
+      operationId: listCostAllocations
+      summary: List Cost Allocations
+      description: >-
+        Returns a list of cost allocation rules defined in the platform for
+        distributing shared costs across teams, projects, or cost centers.
+      tags:
+        - Cost Allocation
+      parameters:
+        - name: page_token
+          in: query
+          description: Token for paginating through results
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+      responses:
+        '200':
+          description: Cost allocations retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocationListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createCostAllocation
+      summary: Create Cost Allocation
+      description: >-
+        Creates a new cost allocation rule for distributing shared cloud costs
+        across cost centers, teams, or projects.
+      tags:
+        - Cost Allocation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CostAllocationRequest'
+      responses:
+        '201':
+          description: Cost allocation created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/cost-allocations/{allocation_id}:
+    get:
+      operationId: getCostAllocation
+      summary: Get Cost Allocation
+      description: Returns details of a specific cost allocation rule.
+      tags:
+        - Cost Allocation
+      parameters:
+        - name: allocation_id
+          in: path
+          required: true
+          description: The unique identifier of the cost allocation rule
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cost allocation retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateCostAllocation
+      summary: Update Cost Allocation
+      description: Updates an existing cost allocation rule.
+      tags:
+        - Cost Allocation
+      parameters:
+        - name: allocation_id
+          in: path
+          required: true
+          description: The unique identifier of the cost allocation rule
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CostAllocationRequest'
+      responses:
+        '200':
+          description: Cost allocation updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAllocation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteCostAllocation
+      summary: Delete Cost Allocation
+      description: Deletes a cost allocation rule from the platform.
+      tags:
+        - Cost Allocation
+      parameters:
+        - name: allocation_id
+          in: path
+          required: true
+          description: The unique identifier of the cost allocation rule
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Cost allocation deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/anomalies:
+    get:
+      operationId: listAnomalies
+      summary: List Anomalies
+      description: >-
+        Returns a list of detected cloud cost anomalies. Anomalies are
+        identified using ML-powered algorithms that detect unexpected spikes or
+        drops in cloud spend.
+      tags:
+        - Anomaly Detection
+      parameters:
+        - name: status
+          in: query
+          description: Filter by anomaly status
+          schema:
+            type: string
+            enum:
+              - open
+              - acknowledged
+              - resolved
+        - name: cloud_provider
+          in: query
+          description: Filter by cloud provider
+          schema:
+            type: string
+            enum:
+              - gcp
+              - aws
+              - azure
+              - oci
+        - name: start_date
+          in: query
+          description: Filter anomalies detected on or after this date (ISO 8601)
+          schema:
+            type: string
+            format: date
+        - name: end_date
+          in: query
+          description: Filter anomalies detected on or before this date (ISO 8601)
+          schema:
+            type: string
+            format: date
+        - name: page_token
+          in: query
+          description: Token for paginating through results
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Anomalies retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/anomalies/{anomaly_id}:
+    get:
+      operationId: getAnomaly
+      summary: Get Anomaly
+      description: Returns details of a specific cost anomaly including affected resources.
+      tags:
+        - Anomaly Detection
+      parameters:
+        - name: anomaly_id
+          in: path
+          required: true
+          description: The unique identifier of the anomaly
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Anomaly retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anomaly'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/anomalies/{anomaly_id}/acknowledge:
+    post:
+      operationId: acknowledgeAnomaly
+      summary: Acknowledge Anomaly
+      description: >-
+        Marks an anomaly as acknowledged, indicating the team is aware of the
+        cost spike.
+      tags:
+        - Anomaly Detection
+      parameters:
+        - name: anomaly_id
+          in: path
+          required: true
+          description: The unique identifier of the anomaly
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  description: Optional comment explaining the acknowledgement
+      responses:
+        '200':
+          description: Anomaly acknowledged successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anomaly'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/commitments:
+    get:
+      operationId: listCommitments
+      summary: List Commitments
+      description: >-
+        Returns a list of cloud commitment purchases (Reserved Instances, Savings
+        Plans, Committed Use Discounts) managed by Ternary.
+      tags:
+        - Commitments
+      parameters:
+        - name: cloud_provider
+          in: query
+          description: Filter by cloud provider
+          schema:
+            type: string
+            enum:
+              - gcp
+              - aws
+              - azure
+        - name: status
+          in: query
+          description: Filter by commitment status
+          schema:
+            type: string
+            enum:
+              - active
+              - expired
+              - pending
+        - name: page_token
+          in: query
+          description: Token for paginating through results
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Commitments retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommitmentListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/commitments/{commitment_id}:
+    get:
+      operationId: getCommitment
+      summary: Get Commitment
+      description: Returns details of a specific cloud commitment purchase.
+      tags:
+        - Commitments
+      parameters:
+        - name: commitment_id
+          in: path
+          required: true
+          description: The unique identifier of the commitment
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Commitment retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Commitment'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/budgets:
+    get:
+      operationId: listBudgets
+      summary: List Budgets
+      description: >-
+        Returns a list of cloud cost budgets configured in the platform, with
+        current spend versus budget targets.
+      tags:
+        - Forecasting
+      parameters:
+        - name: page_token
+          in: query
+          description: Token for paginating through results
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Budgets retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createBudget
+      summary: Create Budget
+      description: Creates a new cloud cost budget with defined spend thresholds and alerts.
+      tags:
+        - Forecasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '201':
+          description: Budget created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/budgets/{budget_id}:
+    get:
+      operationId: getBudget
+      summary: Get Budget
+      description: Returns details of a specific cloud cost budget.
+      tags:
+        - Forecasting
+      parameters:
+        - name: budget_id
+          in: path
+          required: true
+          description: The unique identifier of the budget
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Budget retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: updateBudget
+      summary: Update Budget
+      description: Updates an existing cloud cost budget.
+      tags:
+        - Forecasting
+      parameters:
+        - name: budget_id
+          in: path
+          required: true
+          description: The unique identifier of the budget
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BudgetRequest'
+      responses:
+        '200':
+          description: Budget updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Budget'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBudget
+      summary: Delete Budget
+      description: Deletes a cloud cost budget from the platform.
+      tags:
+        - Forecasting
+      parameters:
+        - name: budget_id
+          in: path
+          required: true
+          description: The unique identifier of the budget
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Budget deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/reports:
+    get:
+      operationId: listReports
+      summary: List Reports
+      description: Returns a list of saved cost reports and dashboards.
+      tags:
+        - Reporting
+      parameters:
+        - name: page_token
+          in: query
+          description: Token for paginating through results
+          schema:
+            type: string
+        - name: page_size
+          in: query
+          description: Number of results per page
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Reports retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createReport
+      summary: Create Report
+      description: >-
+        Creates a new cost report with defined dimensions, filters, and time
+        range.
+      tags:
+        - Reporting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '201':
+          description: Report created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/reports/{report_id}/data:
+    post:
+      operationId: runReport
+      summary: Run Report
+      description: >-
+        Executes a saved report with optional parameter overrides and returns
+        the resulting cost data.
+      tags:
+        - Reporting
+      parameters:
+        - name: report_id
+          in: path
+          required: true
+          description: The unique identifier of the report
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                start_date:
+                  type: string
+                  format: date
+                  description: Override report start date
+                end_date:
+                  type: string
+                  format: date
+                  description: Override report end date
+      responses:
+        '200':
+          description: Report executed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportData'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /v1/kubernetes/pod-labels:
+    get:
+      operationId: listKubernetesPodLabels
+      summary: List Kubernetes Pod Labels
+      description: >-
+        Returns the Kubernetes pod label configuration used for cost allocation
+        across clusters.
+      tags:
+        - Kubernetes
+      responses:
+        '200':
+          description: Pod label configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodLabelConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      operationId: updateKubernetesPodLabels
+      summary: Update Kubernetes Pod Labels
+      description: >-
+        Updates the Kubernetes pod label configuration for cost allocation. Pod
+        labels are used to map Kubernetes workload costs to cost centers and
+        teams.
+      tags:
+        - Kubernetes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PodLabelConfig'
+      responses:
+        '200':
+          description: Pod label configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PodLabelConfig'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key generated from the Ternary platform settings
+  responses:
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  schemas:
+    CostAllocation:
+      type: object
+      description: A cost allocation rule for distributing shared cloud costs
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the allocation rule
+        name:
+          type: string
+          description: Human-readable name for the allocation rule
+        description:
+          type: string
+          description: Description of what this allocation rule does
+        allocation_type:
+          type: string
+          description: Type of cost allocation
+          enum:
+            - proportional
+            - fixed
+            - even
+        source_labels:
+          type: array
+          description: Cloud labels that identify the shared cost source
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          description: Cost centers that receive the allocated costs
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AllocationTarget:
+      type: object
+      properties:
+        cost_center:
+          type: string
+          description: Name of the target cost center
+        percentage:
+          type: number
+          description: Percentage of cost allocated to this target (for proportional type)
+    CostAllocationRequest:
+      type: object
+      required:
+        - name
+        - allocation_type
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        allocation_type:
+          type: string
+          enum:
+            - proportional
+            - fixed
+            - even
+        source_labels:
+          type: array
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
+    CostAllocationListResponse:
+      type: object
+      properties:
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CostAllocation'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    Anomaly:
+      type: object
+      description: A detected cloud cost anomaly
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the anomaly
+        cloud_provider:
+          type: string
+          description: Cloud provider where the anomaly was detected
+          enum:
+            - gcp
+            - aws
+            - azure
+            - oci
+        service:
+          type: string
+          description: Cloud service that generated the anomaly
+        severity:
+          type: string
+          description: Severity level of the anomaly
+          enum:
+            - low
+            - medium
+            - high
+            - critical
+        status:
+          type: string
+          description: Current status of the anomaly
+          enum:
+            - open
+            - acknowledged
+            - resolved
+        expected_cost:
+          type: number
+          description: Expected cost amount based on historical patterns
+        actual_cost:
+          type: number
+          description: Actual observed cost that triggered the anomaly
+        cost_delta:
+          type: number
+          description: Difference between actual and expected cost
+        detected_at:
+          type: string
+          format: date-time
+          description: Timestamp when the anomaly was first detected
+        acknowledged_at:
+          type: string
+          format: date-time
+        comment:
+          type: string
+          description: Comment added when acknowledged
+        affected_resources:
+          type: array
+          description: List of cloud resources contributing to the anomaly
+          items:
+            type: string
+    AnomalyListResponse:
+      type: object
+      properties:
+        anomalies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Anomaly'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    Commitment:
+      type: object
+      description: A cloud commitment purchase
+      properties:
+        id:
+          type: string
+        cloud_provider:
+          type: string
+          enum:
+            - gcp
+            - aws
+            - azure
+        commitment_type:
+          type: string
+          description: Type of commitment
+          enum:
+            - reserved_instance
+            - savings_plan
+            - committed_use_discount
+            - sustained_use_discount
+        status:
+          type: string
+          enum:
+            - active
+            - expired
+            - pending
+        resource_type:
+          type: string
+          description: Resource type covered by the commitment
+        region:
+          type: string
+          description: Cloud region where commitment applies
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        hourly_cost:
+          type: number
+          description: Hourly commitment cost
+        savings_vs_on_demand:
+          type: number
+          description: Percentage savings compared to on-demand pricing
+        utilization:
+          type: number
+          description: Current utilization percentage of the commitment
+    CommitmentListResponse:
+      type: object
+      properties:
+        commitments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commitment'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    Budget:
+      type: object
+      description: A cloud cost budget with spend targets and alerts
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+          description: Budget amount in USD
+        period:
+          type: string
+          description: Budget period
+          enum:
+            - monthly
+            - quarterly
+            - annual
+        cloud_provider:
+          type: string
+        current_spend:
+          type: number
+          description: Current spend for the current period
+        forecasted_spend:
+          type: number
+          description: Forecasted spend for the current period
+        alert_thresholds:
+          type: array
+          description: List of alert thresholds as percentages of budget
+          items:
+            type: number
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    BudgetRequest:
+      type: object
+      required:
+        - name
+        - amount
+        - period
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        period:
+          type: string
+          enum:
+            - monthly
+            - quarterly
+            - annual
+        cloud_provider:
+          type: string
+        alert_thresholds:
+          type: array
+          items:
+            type: number
+    BudgetListResponse:
+      type: object
+      properties:
+        budgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Budget'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    Report:
+      type: object
+      description: A saved cost report configuration
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          description: Cost dimensions to group by
+          items:
+            type: string
+        filters:
+          type: object
+          description: Filter criteria for the report
+          additionalProperties: true
+        time_range:
+          type: string
+          description: Default time range for the report
+          enum:
+            - last_7_days
+            - last_30_days
+            - last_90_days
+            - month_to_date
+            - year_to_date
+        created_at:
+          type: string
+          format: date-time
+    ReportRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          items:
+            type: string
+        filters:
+          type: object
+          additionalProperties: true
+        time_range:
+          type: string
+          enum:
+            - last_7_days
+            - last_30_days
+            - last_90_days
+            - month_to_date
+            - year_to_date
+    ReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ReportData:
+      type: object
+      description: Executed report data with cost breakdown results
+      properties:
+        report_id:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_cost:
+          type: number
+          description: Total cost for the time period
+        rows:
+          type: array
+          description: Cost data rows grouped by dimensions
+          items:
+            type: object
+            additionalProperties: true
+        generated_at:
+          type: string
+          format: date-time
+    PodLabelConfig:
+      type: object
+      description: Kubernetes pod label configuration for cost allocation
+      properties:
+        labels:
+          type: array
+          description: Pod label keys used for cost allocation
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: The Kubernetes label key
+              cost_dimension:
+                type: string
+                description: The Ternary cost dimension this label maps to
+              required:
+                type: boolean
+                description: Whether this label is required for cost allocation
+        updated_at:
+          type: string
+          format: date-time
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string

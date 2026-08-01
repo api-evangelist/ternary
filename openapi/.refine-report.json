@@ -1,0 +1,24 @@
+{
+  "provider": "ternary",
+  "sources": [
+    "ternary-anomaly-detection-api-openapi.yml",
+    "ternary-commitments-api-openapi.yml",
+    "ternary-cost-allocation-api-openapi.yml",
+    "ternary-forecasting-api-openapi.yml",
+    "ternary-kubernetes-api-openapi.yml",
+    "ternary-reporting-api-openapi.yml"
+  ],
+  "outputs": [
+    "ternary-anomaly-detection-api-openapi.yml",
+    "ternary-commitments-api-openapi.yml",
+    "ternary-cost-allocation-api-openapi.yml",
+    "ternary-forecasting-api-openapi.yml",
+    "ternary-kubernetes-api-openapi.yml",
+    "ternary-reporting-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
