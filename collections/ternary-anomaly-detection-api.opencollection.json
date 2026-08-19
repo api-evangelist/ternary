@@ -1,0 +1,117 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ternary Anomaly Detection API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Anomaly Detection",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Anomalies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/anomalies",
+            "params": [
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Filter by anomaly status"
+              },
+              {
+                "name": "cloud_provider",
+                "value": "",
+                "type": "query",
+                "description": "Filter by cloud provider"
+              },
+              {
+                "name": "start_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter anomalies detected on or after this date (ISO 8601)"
+              },
+              {
+                "name": "end_date",
+                "value": "",
+                "type": "query",
+                "description": "Filter anomalies detected on or before this date (ISO 8601)"
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of detected cloud cost anomalies. Anomalies are identified using ML-powered algorithms that detect unexpected spikes or drops in cloud spend."
+        },
+        {
+          "info": {
+            "name": "Get Anomaly",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/anomalies/:anomaly_id",
+            "params": [
+              {
+                "name": "anomaly_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the anomaly"
+              }
+            ]
+          },
+          "docs": "Returns details of a specific cost anomaly including affected resources."
+        },
+        {
+          "info": {
+            "name": "Acknowledge Anomaly",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/anomalies/:anomaly_id/acknowledge",
+            "params": [
+              {
+                "name": "anomaly_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the anomaly"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Marks an anomaly as acknowledged, indicating the team is aware of the cost spike."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

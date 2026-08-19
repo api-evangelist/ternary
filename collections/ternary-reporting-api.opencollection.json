@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ternary Anomaly Detection Reporting API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Reporting",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/reports",
+            "params": [
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Token for paginating through results"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of results per page"
+              }
+            ]
+          },
+          "docs": "Returns a list of saved cost reports and dashboards."
+        },
+        {
+          "info": {
+            "name": "Create Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/reports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new cost report with defined dimensions, filters, and time range."
+        },
+        {
+          "info": {
+            "name": "Run Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.ternary.app/v1/reports/:report_id/data",
+            "params": [
+              {
+                "name": "report_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the report"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Executes a saved report with optional parameter overrides and returns the resulting cost data."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,332 @@
+{
+  "item": [
+    {
+      "id": "71994e5a-4835-4a02-939f-07de2be8d8c6",
+      "name": "Kubernetes",
+      "description": {
+        "content": "Kubernetes cost allocation and pod label management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "948c8f68-f5d6-429b-b8f3-e5d4bd49cbc7",
+          "name": "List Kubernetes Pod Labels",
+          "request": {
+            "name": "List Kubernetes Pod Labels",
+            "description": {
+              "content": "Returns the Kubernetes pod label configuration used for cost allocation across clusters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "kubernetes",
+                "pod-labels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c6e3ed88-5117-41fa-86b7-e429284b3030",
+              "name": "Pod label configuration retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "kubernetes",
+                    "pod-labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"labels\": [\n    {\n      \"key\": \"string\",\n      \"cost_dimension\": \"string\",\n      \"required\": true\n    },\n    {\n      \"key\": \"string\",\n      \"cost_dimension\": \"string\",\n      \"required\": false\n    }\n  ],\n  \"updated_at\": \"1955-03-17T22:29:14.475Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c9dc557-c7f9-4c8a-8eaf-9240a1dbf190",
+              "name": "Authentication failed - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "kubernetes",
+                    "pod-labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"details\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "df94700f-1ea7-4d27-b7f8-27257f2dd585",
+          "name": "Update Kubernetes Pod Labels",
+          "request": {
+            "name": "Update Kubernetes Pod Labels",
+            "description": {
+              "content": "Updates the Kubernetes pod label configuration for cost allocation. Pod labels are used to map Kubernetes workload costs to cost centers and teams.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "kubernetes",
+                "pod-labels"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"labels\": [\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    }\n  ],\n  \"updated_at\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "07092c14-9e09-404f-93b3-f84a5dd14d56",
+              "name": "Pod label configuration updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "kubernetes",
+                    "pod-labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    }\n  ],\n  \"updated_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"labels\": [\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    }\n  ],\n  \"updated_at\": \"<dateTime>\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "299808b2-23d6-4209-8eff-c4478ba23a3a",
+              "name": "Authentication failed - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "kubernetes",
+                    "pod-labels"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"labels\": [\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"cost_dimension\": \"<string>\",\n      \"required\": \"<boolean>\"\n    }\n  ],\n  \"updated_at\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"details\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ternary.app",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "cd744f4c-667f-4200-a0f0-14f864e098f6",
+    "name": "Ternary Anomaly Detection Kubernetes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.\n\nContact Support:\n Name: Ternary Support",
+      "type": "text/plain"
+    }
+  }
+}

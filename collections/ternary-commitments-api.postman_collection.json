@@ -1,0 +1,422 @@
+{
+  "item": [
+    {
+      "id": "1e1390dd-5d7a-41b0-ad67-9c7ccb311d82",
+      "name": "Commitments",
+      "description": {
+        "content": "Manage cloud commitment purchases and optimization",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8c4cdd67-abdf-4962-b3a8-ef3a1afda8f4",
+          "name": "List Commitments",
+          "request": {
+            "name": "List Commitments",
+            "description": {
+              "content": "Returns a list of cloud commitment purchases (Reserved Instances, Savings Plans, Committed Use Discounts) managed by Ternary.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "commitments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "cloud_provider",
+                  "value": "<string>",
+                  "description": "Filter by cloud provider"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "Filter by commitment status"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>",
+                  "description": "Token for paginating through results"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5495ce86-c6d3-405b-b76f-29a55f1eacf4",
+              "name": "Commitments retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "commitments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud_provider",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"commitments\": [\n    {\n      \"id\": \"string\",\n      \"cloud_provider\": \"azure\",\n      \"commitment_type\": \"committed_use_discount\",\n      \"status\": \"active\",\n      \"resource_type\": \"string\",\n      \"region\": \"string\",\n      \"start_date\": \"2019-08-01\",\n      \"end_date\": \"1994-02-07\",\n      \"hourly_cost\": 7492.447156972017,\n      \"savings_vs_on_demand\": 8633.722467273685,\n      \"utilization\": 6534.63651157442\n    },\n    {\n      \"id\": \"string\",\n      \"cloud_provider\": \"azure\",\n      \"commitment_type\": \"reserved_instance\",\n      \"status\": \"active\",\n      \"resource_type\": \"string\",\n      \"region\": \"string\",\n      \"start_date\": \"1969-01-26\",\n      \"end_date\": \"1954-04-12\",\n      \"hourly_cost\": 8502.259650658976,\n      \"savings_vs_on_demand\": 790.9974361726779,\n      \"utilization\": 8748.779943647429\n    }\n  ],\n  \"next_page_token\": \"string\",\n  \"total_count\": 6745\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78253e6f-9804-460a-9843-c93ed94eadef",
+              "name": "Authentication failed - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "commitments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "cloud_provider",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"details\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "24c5f1c4-c66f-4355-9306-e5d619ba2838",
+          "name": "Get Commitment",
+          "request": {
+            "name": "Get Commitment",
+            "description": {
+              "content": "Returns details of a specific cloud commitment purchase.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "commitments",
+                ":commitment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "commitment_id",
+                  "description": "(Required) The unique identifier of the commitment"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "55a48202-8d12-4e61-8d5d-ad6784ba3b85",
+              "name": "Commitment retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "commitments",
+                    ":commitment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commitment_id",
+                      "description": "(Required) The unique identifier of the commitment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"cloud_provider\": \"gcp\",\n  \"commitment_type\": \"committed_use_discount\",\n  \"status\": \"expired\",\n  \"resource_type\": \"string\",\n  \"region\": \"string\",\n  \"start_date\": \"2018-06-25\",\n  \"end_date\": \"1957-04-05\",\n  \"hourly_cost\": 2706.962555096379,\n  \"savings_vs_on_demand\": 1150.0183537635978,\n  \"utilization\": 936.711247580545\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e089344-c137-475e-abe8-ea1d8755bf26",
+              "name": "Authentication failed - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "commitments",
+                    ":commitment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commitment_id",
+                      "description": "(Required) The unique identifier of the commitment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"details\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9b0d252d-b51a-4e99-949b-895a9eb10264",
+              "name": "The requested resource was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "commitments",
+                    ":commitment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "commitment_id",
+                      "description": "(Required) The unique identifier of the commitment"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": {\n    \"code\": \"string\",\n    \"message\": \"string\",\n    \"details\": [\n      \"string\",\n      \"string\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.ternary.app",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e39f495d-6217-4fbc-8093-4fdd616284cd",
+    "name": "Ternary Anomaly Detection Commitments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.\n\nContact Support:\n Name: Ternary Support",
+      "type": "text/plain"
+    }
+  }
+}

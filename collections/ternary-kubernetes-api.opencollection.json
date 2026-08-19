@@ -1,0 +1,52 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ternary Anomaly Detection Kubernetes API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Kubernetes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Kubernetes Pod Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.ternary.app/v1/kubernetes/pod-labels"
+          },
+          "docs": "Returns the Kubernetes pod label configuration used for cost allocation across clusters."
+        },
+        {
+          "info": {
+            "name": "Update Kubernetes Pod Labels",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.ternary.app/v1/kubernetes/pod-labels",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the Kubernetes pod label configuration for cost allocation. Pod labels are used to map Kubernetes workload costs to cost centers and teams."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
