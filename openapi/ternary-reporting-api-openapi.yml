@@ -1,6 +1,6 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Ternary Anomaly Detection Reporting API
+  title: Ternary Reporting API
   description: Ternary is a multi-cloud FinOps platform providing programmatic access to cloud cost visibility, anomaly detection, commitment management, cost allocation, forecasting, and reporting. The REST API enables automation of FinOps workflows, integration of cost data into CI/CD pipelines, and programmatic management of all platform capabilities. Authentication uses API keys generated from the Ternary platform.
   version: '1.0'
   contact:
@@ -106,6 +106,57 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ReportRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          items:
+            type: string
+        filters:
+          type: object
+          additionalProperties: true
+        time_range:
+          type: string
+          enum:
+          - last_7_days
+          - last_30_days
+          - last_90_days
+          - month_to_date
+          - year_to_date
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+    ReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
     Report:
       type: object
       description: A saved cost report configuration
@@ -137,41 +188,6 @@ components:
         created_at:
           type: string
           format: date-time
-    ReportListResponse:
-      type: object
-      properties:
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/Report'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
-    ReportRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        dimensions:
-          type: array
-          items:
-            type: string
-        filters:
-          type: object
-          additionalProperties: true
-        time_range:
-          type: string
-          enum:
-          - last_7_days
-          - last_30_days
-          - last_90_days
-          - month_to_date
-          - year_to_date
     ReportData:
       type: object
       description: Executed report data with cost breakdown results
@@ -196,31 +212,15 @@ components:
         generated_at:
           type: string
           format: date-time
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
   responses:
-    Unauthorized:
-      description: Authentication failed - invalid or missing API key
+    NotFound:
+      description: The requested resource was not found
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource was not found
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
       content:
         application/json:
           schema:
