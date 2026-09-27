@@ -145,6 +145,15 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    AllocationTarget:
+      type: object
+      properties:
+        cost_center:
+          type: string
+          description: Name of the target cost center
+        percentage:
+          type: number
+          description: Percentage of cost allocated to this target (for proportional type)
     ErrorResponse:
       type: object
       properties:
@@ -161,6 +170,41 @@ components:
               type: array
               items:
                 type: string
+    CostAllocationListResponse:
+      type: object
+      properties:
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CostAllocation'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    CostAllocationRequest:
+      type: object
+      required:
+      - name
+      - allocation_type
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        allocation_type:
+          type: string
+          enum:
+          - proportional
+          - fixed
+          - even
+        source_labels:
+          type: array
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
     CostAllocation:
       type: object
       description: A cost allocation rule for distributing shared cloud costs
@@ -197,50 +241,6 @@ components:
         updated_at:
           type: string
           format: date-time
-    CostAllocationRequest:
-      type: object
-      required:
-      - name
-      - allocation_type
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        allocation_type:
-          type: string
-          enum:
-          - proportional
-          - fixed
-          - even
-        source_labels:
-          type: array
-          items:
-            type: string
-        target_cost_centers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllocationTarget'
-    AllocationTarget:
-      type: object
-      properties:
-        cost_center:
-          type: string
-          description: Name of the target cost center
-        percentage:
-          type: number
-          description: Percentage of cost allocated to this target (for proportional type)
-    CostAllocationListResponse:
-      type: object
-      properties:
-        allocations:
-          type: array
-          items:
-            $ref: '#/components/schemas/CostAllocation'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
   responses:
     BadRequest:
       description: Invalid request parameters or body

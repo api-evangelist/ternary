@@ -83,6 +83,17 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    CommitmentListResponse:
+      type: object
+      properties:
+        commitments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Commitment'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
     ErrorResponse:
       type: object
       properties:
@@ -99,17 +110,6 @@ components:
               type: array
               items:
                 type: string
-    CommitmentListResponse:
-      type: object
-      properties:
-        commitments:
-          type: array
-          items:
-            $ref: '#/components/schemas/Commitment'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
     Commitment:
       type: object
       description: A cloud commitment purchase

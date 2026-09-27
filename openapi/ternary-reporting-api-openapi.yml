@@ -106,30 +106,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    ReportRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        dimensions:
-          type: array
-          items:
-            type: string
-        filters:
-          type: object
-          additionalProperties: true
-        time_range:
-          type: string
-          enum:
-          - last_7_days
-          - last_30_days
-          - last_90_days
-          - month_to_date
-          - year_to_date
     ErrorResponse:
       type: object
       properties:
@@ -157,6 +133,30 @@ components:
           type: string
         total_count:
           type: integer
+    ReportRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        dimensions:
+          type: array
+          items:
+            type: string
+        filters:
+          type: object
+          additionalProperties: true
+        time_range:
+          type: string
+          enum:
+          - last_7_days
+          - last_30_days
+          - last_90_days
+          - month_to_date
+          - year_to_date
     Report:
       type: object
       description: A saved cost report configuration

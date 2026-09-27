@@ -167,17 +167,6 @@ components:
           type: array
           items:
             type: number
-    BudgetListResponse:
-      type: object
-      properties:
-        budgets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Budget'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
     ErrorResponse:
       type: object
       properties:
@@ -194,6 +183,17 @@ components:
               type: array
               items:
                 type: string
+    BudgetListResponse:
+      type: object
+      properties:
+        budgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Budget'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
     Budget:
       type: object
       description: A cloud cost budget with spend targets and alerts
