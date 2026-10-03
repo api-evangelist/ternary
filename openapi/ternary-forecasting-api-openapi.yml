@@ -142,58 +142,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    BudgetRequest:
-      type: object
-      required:
-      - name
-      - amount
-      - period
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        amount:
-          type: number
-        period:
-          type: string
-          enum:
-          - monthly
-          - quarterly
-          - annual
-        cloud_provider:
-          type: string
-        alert_thresholds:
-          type: array
-          items:
-            type: number
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
-    BudgetListResponse:
-      type: object
-      properties:
-        budgets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Budget'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
     Budget:
       type: object
       description: A cloud cost budget with spend targets and alerts
@@ -233,6 +181,58 @@ components:
         updated_at:
           type: string
           format: date-time
+    BudgetRequest:
+      type: object
+      required:
+      - name
+      - amount
+      - period
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        period:
+          type: string
+          enum:
+          - monthly
+          - quarterly
+          - annual
+        cloud_provider:
+          type: string
+        alert_thresholds:
+          type: array
+          items:
+            type: number
+    BudgetListResponse:
+      type: object
+      properties:
+        budgets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Budget'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
   responses:
     NotFound:
       description: The requested resource was not found

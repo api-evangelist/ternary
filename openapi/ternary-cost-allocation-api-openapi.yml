@@ -144,6 +144,25 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    BadRequest:
+      description: Invalid request parameters or body
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
     AllocationTarget:
       type: object
@@ -154,22 +173,6 @@ components:
         percentage:
           type: number
           description: Percentage of cost allocated to this target (for proportional type)
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
     CostAllocationListResponse:
       type: object
       properties:
@@ -181,30 +184,6 @@ components:
           type: string
         total_count:
           type: integer
-    CostAllocationRequest:
-      type: object
-      required:
-      - name
-      - allocation_type
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        allocation_type:
-          type: string
-          enum:
-          - proportional
-          - fixed
-          - even
-        source_labels:
-          type: array
-          items:
-            type: string
-        target_cost_centers:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllocationTarget'
     CostAllocation:
       type: object
       description: A cost allocation rule for distributing shared cloud costs
@@ -241,25 +220,46 @@ components:
         updated_at:
           type: string
           format: date-time
-  responses:
-    BadRequest:
-      description: Invalid request parameters or body
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    NotFound:
-      description: The requested resource was not found
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication failed - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
+    CostAllocationRequest:
+      type: object
+      required:
+      - name
+      - allocation_type
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        allocation_type:
+          type: string
+          enum:
+          - proportional
+          - fixed
+          - even
+        source_labels:
+          type: array
+          items:
+            type: string
+        target_cost_centers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllocationTarget'
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
