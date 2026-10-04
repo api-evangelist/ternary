@@ -151,39 +151,19 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    Unauthorized:
-      description: Authentication failed - invalid or missing API key
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     BadRequest:
       description: Invalid request parameters or body
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Authentication failed - invalid or missing API key
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   schemas:
-    AllocationTarget:
-      type: object
-      properties:
-        cost_center:
-          type: string
-          description: Name of the target cost center
-        percentage:
-          type: number
-          description: Percentage of cost allocated to this target (for proportional type)
-    CostAllocationListResponse:
-      type: object
-      properties:
-        allocations:
-          type: array
-          items:
-            $ref: '#/components/schemas/CostAllocation'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
     CostAllocation:
       type: object
       description: A cost allocation rule for distributing shared cloud costs
@@ -220,6 +200,31 @@ components:
         updated_at:
           type: string
           format: date-time
+    AllocationTarget:
+      type: object
+      properties:
+        cost_center:
+          type: string
+          description: Name of the target cost center
+        percentage:
+          type: number
+          description: Percentage of cost allocated to this target (for proportional type)
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
     CostAllocationRequest:
       type: object
       required:
@@ -244,22 +249,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AllocationTarget'
-    ErrorResponse:
+    CostAllocationListResponse:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
+        allocations:
+          type: array
+          items:
+            $ref: '#/components/schemas/CostAllocation'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

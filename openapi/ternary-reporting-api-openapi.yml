@@ -106,6 +106,41 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
+    ReportData:
+      type: object
+      description: Executed report data with cost breakdown results
+      properties:
+        report_id:
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        total_cost:
+          type: number
+          description: Total cost for the time period
+        rows:
+          type: array
+          description: Cost data rows grouped by dimensions
+          items:
+            type: object
+            additionalProperties: true
+        generated_at:
+          type: string
+          format: date-time
     ReportRequest:
       type: object
       required:
@@ -130,6 +165,22 @@ components:
           - last_90_days
           - month_to_date
           - year_to_date
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
     Report:
       type: object
       description: A saved cost report configuration
@@ -159,57 +210,6 @@ components:
           - month_to_date
           - year_to_date
         created_at:
-          type: string
-          format: date-time
-    ReportListResponse:
-      type: object
-      properties:
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/Report'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
-    ReportData:
-      type: object
-      description: Executed report data with cost breakdown results
-      properties:
-        report_id:
-          type: string
-        start_date:
-          type: string
-          format: date
-        end_date:
-          type: string
-          format: date
-        total_cost:
-          type: number
-          description: Total cost for the time period
-        rows:
-          type: array
-          description: Cost data rows grouped by dimensions
-          items:
-            type: object
-            additionalProperties: true
-        generated_at:
           type: string
           format: date-time
   responses:
