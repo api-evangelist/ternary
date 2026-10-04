@@ -135,6 +135,9 @@ apis:
   - type: GettingStarted
     url: https://docs.ternary.app/docs/using-the-api
 common:
+  - type: CapabilityMap
+    url: capabilities/ternary-capability-edges.yml
+    name: Ternary Business Capability Map
   - type: AgenticAccess
     url: agentic-access/ternary-agentic-access.yml
   - type: DomainSecurity
