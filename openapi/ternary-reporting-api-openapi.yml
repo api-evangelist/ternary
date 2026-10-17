@@ -106,17 +106,22 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    ReportListResponse:
+    ErrorResponse:
       type: object
       properties:
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/Report'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
     ReportData:
       type: object
       description: Executed report data with cost breakdown results
@@ -165,22 +170,17 @@ components:
           - last_90_days
           - month_to_date
           - year_to_date
-    ErrorResponse:
+    ReportListResponse:
       type: object
       properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/Report'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
     Report:
       type: object
       description: A saved cost report configuration

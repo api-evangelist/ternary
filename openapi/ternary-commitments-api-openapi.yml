@@ -83,6 +83,22 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
     Commitment:
       type: object
       description: A cloud commitment purchase
@@ -130,22 +146,6 @@ components:
         utilization:
           type: number
           description: Current utilization percentage of the commitment
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
     CommitmentListResponse:
       type: object
       properties:

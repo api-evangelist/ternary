@@ -136,6 +136,33 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: Error code
+            message:
+              type: string
+              description: Human-readable error message
+            details:
+              type: array
+              items:
+                type: string
+    AnomalyListResponse:
+      type: object
+      properties:
+        anomalies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Anomaly'
+        next_page_token:
+          type: string
+        total_count:
+          type: integer
     Anomaly:
       type: object
       description: A detected cloud cost anomaly
@@ -193,33 +220,6 @@ components:
           description: List of cloud resources contributing to the anomaly
           items:
             type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-              description: Error code
-            message:
-              type: string
-              description: Human-readable error message
-            details:
-              type: array
-              items:
-                type: string
-    AnomalyListResponse:
-      type: object
-      properties:
-        anomalies:
-          type: array
-          items:
-            $ref: '#/components/schemas/Anomaly'
-        next_page_token:
-          type: string
-        total_count:
-          type: integer
   responses:
     NotFound:
       description: The requested resource was not found
