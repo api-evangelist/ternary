@@ -1,4 +1,4 @@
-# Ternary (ternary)
+# Ternary
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,65 +66,172 @@
 
 Ternary is a multi-cloud FinOps platform providing cost visibility, anomaly detection, commitment management, forecasting, and Kubernetes cost allocation for cloud environments. Originally built for Google Cloud, Ternary now supports AWS, Azure, and other cloud providers through its Universal Spend Ledger, with a REST API for programmatic access to all platform capabilities.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/apis.yml)
+**Areas:** Cloud Cost Management · Cost Optimization · FinOps · Google Cloud · Kubernetes · Multi-Cloud
 
-## Scope
+## Ternary on APIs.io
 
-- **Type:** Index
+Everything profiled for Ternary is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ternary/](https://apis.io/providers/ternary/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (6)
 
-- Cloud Cost Management
-- Cost Optimization
-- FinOps
-- Google Cloud
-- Kubernetes
-- Multi-Cloud
+- [Ternary Anomaly Detection API](https://apis.io/apis/ternary/ternary-anomaly-detection-api/) — Manage and query cloud cost anomalies
+- [Ternary Commitments API](https://apis.io/apis/ternary/ternary-commitments-api/) — Manage cloud commitment purchases and optimization
+- [Ternary Cost Allocation API](https://apis.io/apis/ternary/ternary-cost-allocation-api/) — Manage cost allocation rules, cost centers, and labels
+- [Ternary Forecasting API](https://apis.io/apis/ternary/ternary-forecasting-api/) — Budget forecasting and spend projections
+- [Ternary Kubernetes API](https://apis.io/apis/ternary/ternary-kubernetes-api/) — Kubernetes cost allocation and pod label management
+- [Ternary Reporting API](https://apis.io/apis/ternary/ternary-reporting-api/) — Cost reports, dashboards, and analytics
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-16
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Ternary API
+Model Context Protocol servers that expose the API to agents.
 
-Ternary provides a REST API that exposes all platform capabilities programmatically. Customers can automate FinOps workflows, integrate cost data into CI/CD pipelines, trigger alerts based on spend thresholds, manage commitments, and generate reports. Authentication uses API keys generated from the platform.
+- [ternary](https://apis.io/servers/ternary/ternary/)
 
-- **Human URL:** [https://ternary.app/](https://ternary.app/)
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- Automation
-- Cloud Costs
-- Cost Management
-- FinOps
-- REST API
+- [Ternary Agentic Access](https://apis.io/agentic-access/ternary/ternary-agentic-access/)
 
-#### Properties
+#### JSON Schema (2)
 
-- [Documentation](https://docs.ternary.app/)
-- [API Reference](https://docs.ternary.app/reference)
-- [Getting Started](https://docs.ternary.app/docs/using-the-api)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/ternary.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/ternary.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+The data models the API reads and writes.
 
-## Common Properties
+- [Ternary Cloud Cost Anomaly](https://apis.io/schemas/ternary/ternary-anomaly/)
+- [Ternary Cloud Cost Budget](https://apis.io/schemas/ternary/ternary-budget/)
 
-- [LinkedIn](https://www.linkedin.com/company/ternaryinc)
+#### JSON Structure (1)
+
+Data models expressed in JSON Structure.
+
+- [Ternary Anomaly Structure](https://apis.io/json-structure/ternary/ternary-anomaly-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Ternary Context](https://apis.io/jsonld/ternary/ternary-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Ternary Vocabulary](https://apis.io/vocabularies/ternary/ternary-vocabulary/)
+
+#### Examples (2)
+
+Example requests and responses.
+
+- [Ternary Create Budget Example](https://apis.io/examples/ternary/ternary-create-budget-example/)
+- [Ternary List Anomalies Example](https://apis.io/examples/ternary/ternary-list-anomalies-example/)
+
+#### Collections (7)
+
+Postman and Open Collection request collections.
+
+- [Ternary API](https://apis.io/collections/ternary/open-ternary/)
+- [Ternary Anomaly Detection API](https://apis.io/collections/ternary/open-ternary-anomaly-detection-api/)
+- [Ternary Anomaly Detection Commitments API](https://apis.io/collections/ternary/open-ternary-commitments-api/)
+- [Ternary Anomaly Detection Cost Allocation API](https://apis.io/collections/ternary/open-ternary-cost-allocation-api/)
+- [Ternary Anomaly Detection Forecasting API](https://apis.io/collections/ternary/open-ternary-forecasting-api/)
+- [Ternary Anomaly Detection Kubernetes API](https://apis.io/collections/ternary/open-ternary-kubernetes-api/)
+- [Ternary Anomaly Detection Reporting API](https://apis.io/collections/ternary/open-ternary-reporting-api/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Ternary — jsonschema rules](https://apis.io/rules/ternary/ternary-jsonschema-spectral-rules/)
+- [Ternary API Rules](https://apis.io/rules/ternary/ternary-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Ternary Authentication](https://apis.io/security/ternary/ternary-authentication/)
+- [Ternary Domain Security](https://apis.io/security/ternary/ternary-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Ternary Plans Pricing](https://apis.io/plans/ternary/ternary-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Ternary Rate Limits](https://apis.io/rate-limits/ternary/ternary-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Ternary Finops](https://apis.io/finops/ternary/ternary-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://ternary.app/)
 - [Documentation](https://docs.ternary.app/)
-- [G C P  Integration](https://ternary.app/integrations/google-cloud-gcp/)
-- [Kubernetes](https://ternary.app/integrations/kubernetes/)
 - [Blog](https://ternary.app/blog/)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/openapi/ternary-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Vocabulary](https://raw.githubusercontent.com/api-evangelist/ternary/refs/heads/main/vocabulary/ternary-vocabulary.yml)
-- [Integrations](https://ternary.app/integrations/)
-- [L L Ms Txt](https://docs.ternary.app/llms.txt)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 32.8** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 61.7 |
+| Contract governance | 27.3 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 26.2 |
+| Access clarity | 7.9 |
+
+**Agent readiness 31.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ternary/](https://apis.io/providers/ternary/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Ternary: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ternary/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
